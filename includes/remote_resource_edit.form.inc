@@ -2,11 +2,11 @@
 
 /**
  * @file
- * XML OBJ editing form.
+ * Remote resource OBJ editing form.
  */
 
 /**
- * Retrives the XML edit form.
+ * Retrives the OBJ edit form.
  *
  * @param AbstractObject $object
  *   The Islandora object.
@@ -59,7 +59,7 @@ function islandora_solution_pack_remote_resource_edit_url_form_submit($form, &$f
     $object->ingestDatastream($url);
   }
   catch (Exception $e) {
-    // do something?
+    // Do something?
   }
   drupal_set_message(t("Remote URL updated for !object.", array('!object' => $object->id)));
   drupal_goto("islandora/object/{$object->id}/manage/datastreams");

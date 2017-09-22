@@ -27,7 +27,7 @@ function islandora_solution_pack_remote_resource_admin(array $form, array &$form
       'goto' => t('automatic redirect'),
     ),
     '#description' => t('Choose whether the user is shown an interstitial page containing a link to the remote resource, or is automatically redirected.'),
-  );  
+  );
 
   $module_path = drupal_get_path('module', 'islandora_solution_pack_remote_resource');
   $default_tn_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . $module_path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'remote.png';

@@ -54,7 +54,7 @@
             <properties>
               <type>textfield</type>
               <access>TRUE</access>
-              <description>Title of the XML document.</description>
+              <description>Title of the remote resource.</description>
               <required>FALSE</required>
               <title>Title</title>
               <tree>TRUE</tree>
@@ -84,7 +84,7 @@
             <properties>
               <type>textfield</type>
               <access>TRUE</access>
-              <description>Sub title of the XML document.</description>
+              <description>Sub title of the remote resource.</description>
               <required>FALSE</required>
               <title>Subtitle</title>
               <tree>TRUE</tree>

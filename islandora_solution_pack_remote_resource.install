@@ -20,4 +20,10 @@ function islandora_solution_pack_remote_resource_uninstall() {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   variable_del('islandora_solution_pack_remote_resource_default_thumbnail_path');
   islandora_install_solution_pack('islandora_solution_pack_remote_resource', 'uninstall');
+
+  $variables = array(
+    'islandora_solution_pack_remote_resource_default_thumbnail_path',
+    'islandora_solution_pack_remote_resource_redirection_type',
+  );
+  array_walk($variables, 'variable_del');
 }

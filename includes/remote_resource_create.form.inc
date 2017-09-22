@@ -2,11 +2,11 @@
 
 /**
  * @file
- * Handles the uploading of the XML object file as part of the ingest process.
+ * Handles the creation of the stub object as part of the ingest process.
  */
 
 /**
- * Defines a file upload form for uploading the XML file.
+ * Defines a form for creating the stub object.
  *
  * @param array $form
  *   The drupal form.
@@ -20,8 +20,8 @@ function islandora_solution_pack_remote_resource_create_form(array $form, array 
   $upload_size = min((int) ini_get('post_max_size'), (int) ini_get('upload_max_filesize'));
   $form = array();
   $form['url'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('URL'), 
+    '#type' => 'textfield',
+    '#title' => t('URL'),
     '#default_value' => '',
     '#descrtption' => t('URL of the remote resource'),
     '#required' => TRUE,
