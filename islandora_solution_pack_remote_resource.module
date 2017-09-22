@@ -1,0 +1,186 @@
+<?php
+
+/**
+ * @file
+ * Handles the creation and display of remote resources.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_solution_pack_remote_resource_menu() {
+  $items = array();
+/*
+  $items['admin/islandora/solution_pack_config/remote_resource'] = array(
+    'title' => 'Simple XML Solution Pack',
+    'description' => 'Configure the Simple XML Object Solution Pack.',
+    'page callback' => 'drupal_get_form',
+    'access arguments' => array('administer site configuration'),
+    'page arguments' => array('islandora_solution_pack_xml_admin'),
+    'file' => 'includes/admin.form.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+*/
+  $items['islandora/object/%islandora_object/datastreams/remote_resource/OBJ/edit'] = array(
+    'title' => 'Edit Remote Resouce URL',
+    'file' => 'includes/remote_resource_edit.form.inc',
+    'page callback' => 'islandora_solution_pack_remote_resource_edit_url',
+    'page arguments' => array(2),
+    'access callback' => 'islandora_object_manage_access_callback',
+    'access arguments' => array(
+      array(
+        ISLANDORA_METADATA_EDIT,
+        ISLANDORA_ADD_DS,
+        ISLANDORA_PURGE,
+      ), 2),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_islandora_edit_datastream_registry().
+ */
+function islandora_solution_pack_remote_resource_islandora_edit_datastream_registry($object, $dsid) {
+  if (in_array('islandora:sp_remote_resource', $object->models) &&
+    $dsid->id == 'OBJ') {
+    return array(
+      array(
+        'name' => t('Remote Resource URL Edit Form'),
+        'url' => "islandora/object/{$object->id}/datastreams/remote_resource/OBJ/edit",
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * We supply a pattern so we can overide templates at the theme level if needed.
+ * We can append a pid to a template and the new template file will be called
+ * (the pid's colon should be replaced with a dash).
+ * An example template might be named:
+ *   "islandora-simple-xml--islandora-100.tpl.php".
+ */
+function islandora_solution_pack_remote_resource_theme($existing, $type, $theme, $path) {
+  return array(
+    'islandora_solution_pack_remote_resource_default' => array(
+      'template' => 'theme/islandora-solution-pack-remote-resource-default',
+      'file' => 'theme/theme.inc',
+      'pattern' => 'islandora_solution_pack_remote_resource__',
+      'variables' => array('islandora_object' => NULL),
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function islandora_solution_pack_remote_resource_permission() {
+  return array(
+    'upload remote resource thumbnails' => array(
+      'title' => t('Upload object-specific thumbnails'),
+      'description' => t('Upload object-specific custom thumbnails'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_islandora_required_objects().
+ */
+function islandora_solution_pack_remote_resource_islandora_required_objects(IslandoraTuque $connection) {
+  $module_path = drupal_get_path('module', 'islandora_solution_pack_remote_resource');
+  // Islandora Remote Resource Content Model.
+  $remote_resource_content_model = $connection->repository->constructObject('islandora:sp_remote_resource');
+  $remote_resource_content_model->owner = 'fedoraAdmin';
+  $remote_resource_content_model->label = 'Islandora Remote Resource Content Model';
+  $remote_resource_content_model->models = 'fedora-system:ContentModel-3.0';
+  // DS-COMPOSITE-MODEL Datastream.
+  $datastream = $remote_resource_content_model->constructDatastream('DS-COMPOSITE-MODEL', 'X');
+  $datastream->label = 'DS-COMPOSITE-MODEL';
+  $datastream->mimetype = 'application/xml';
+  $datastream->setContentFromFile("$module_path/xml/islandora_remote_resource_ds_composite_model.xml", FALSE);
+  $remote_resource_content_model->ingestDatastream($datastream);
+  // Remote Resource Collection.
+  $remote_resource_collection = $connection->repository->constructObject('islandora:sp_remote_resource_collection');
+  $remote_resource_collection->owner = 'fedoraAdmin';
+  $remote_resource_collection->label = 'Remote Resource Collection';
+  $remote_resource_collection->models = 'islandora:collectionCModel';
+  $top_level_collection = variable_get('islandora_repository_pid', 'islandora:root');
+  $remote_resource_collection->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', $top_level_collection);
+  // Collection Policy Datastream.
+  $datastream = $remote_resource_collection->constructDatastream('COLLECTION_POLICY', 'X');
+  $datastream->label = 'Collection policy';
+  $datastream->mimetype = 'application/xml';
+  $datastream->setContentFromFile("$module_path/xml/islandora_remote_resource_collection_policy.xml", FALSE);
+  $remote_resource_collection->ingestDatastream($datastream);
+  // TN Datastream.
+  $datastream = $remote_resource_collection->constructDatastream('TN', 'M');
+  $datastream->label = 'Thumbnail';
+  $datastream->mimetype = 'image/png';
+  $datastream->setContentFromFile("$module_path/images/remote.png", FALSE);
+  $remote_resource_collection->ingestDatastream($datastream);
+  return array(
+    'islandora_solution_pack_remote_resource' => array(
+      'title' => 'Islandora Remote Resource',
+      'objects' => array(
+        $remote_resource_content_model,
+        $remote_resource_collection,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_islandora_xml_form_builder_forms().
+ */
+function islandora_solution_pack_remote_resource_islandora_xml_form_builder_forms() {
+  $module_path = drupal_get_path('module', 'islandora_solution_pack_remote_resource');
+  return array(
+    'Islandora Remote Resource Object MODS form' => array(
+      'form_file' => "$module_path/xml/islandora_remote_resource_form_mods.xml",
+    ),
+  );
+}
+
+/**
+ * Implements hook_islandora_xml_form_builder_form_associations().
+ */
+function islandora_solution_pack_remote_resource_islandora_xml_form_builder_form_associations() {
+  return array(
+    'islandora_remote_resource_mods_form' => array(
+      'content_model' => 'islandora:sp_remote_resource',
+      'form_name' => 'Islandora Remote Resource Object MODS form',
+      'dsid' => 'MODS',
+      'title_field' => array(
+        'titleInfo', 'title',
+      ),
+      'transform' => 'mods_to_dc.xsl',
+      'self_transform' => 'cleanup_mods.xsl',
+      'template' => FALSE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_cmodel_pid_islandora_ingest_steps().
+ */
+function islandora_solution_pack_remote_resource_islandora_sp_remote_resource_islandora_ingest_steps() {
+  return array(
+    'islandora_solution_pack_remote_resource_create' => array(
+      'weight' => 10,
+      'type' => 'form',
+      'form_id' => 'islandora_solution_pack_remote_resource_create_form',
+      'module' => 'islandora_solution_pack_remote_resource',
+      'file' => 'includes/remote_resource_create.form.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_CMODEL_PID_islandora_view_object().
+ */
+function islandora_solution_pack_remote_resource_islandora_sp_remote_resource_islandora_view_object($object, $page_number, $page_size) {
+  $output = theme('islandora_solution_pack_remote_resource_default', array('islandora_object' => $object));
+  return array('' => $output);
+}

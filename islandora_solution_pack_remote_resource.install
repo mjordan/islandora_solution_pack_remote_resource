@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for this module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function islandora_solution_pack_remote_resource_install() {
+  module_load_include('inc', 'islandora', 'includes/solution_packs');
+  islandora_install_solution_pack('islandora_solution_pack_remote_resource');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function islandora_solution_pack_remote_resource_uninstall() {
+  module_load_include('inc', 'islandora', 'includes/solution_packs');
+  variable_del('islandora_solution_pack_remote_resource_default_thumbnail_path');
+  islandora_install_solution_pack('islandora_solution_pack_remote_resource', 'uninstall');
+}
