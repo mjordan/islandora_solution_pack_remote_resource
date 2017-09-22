@@ -40,10 +40,11 @@ function islandora_solution_pack_remote_resource_preprocess_islandora_solution_p
   $variables['dc_array'] = isset($dc_object) ? $dc_object->asArray() : array();
   $variables['islandora_object_label'] = $islandora_object->label;
   $variables['theme_hook_suggestions'][] = 'islandora_remote_resource__' . str_replace(':', '_', $islandora_object->id);
-  $variables['metadata'] = '';
-  $variables['description'] = '';
+  $variables['metadata'] = islandora_retrieve_metadata_markup($islandora_object);
+  $variables['description'] = islandora_retrieve_description_markup($islandora_object);
 
   $remote_resource_url = $islandora_object['OBJ']->content;
+  $content = t('This resource is hosted on another website: <a href="!url">!url</a>.', array('!url' => $remote_resource_url));
 
-  $variables['islandora_content'] = $remote_resource_url;
+  $variables['islandora_content'] = $content;
 }

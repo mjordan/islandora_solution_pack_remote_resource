@@ -16,33 +16,35 @@
  * @return array
  *   The Drupal form definition.
  */
-function islandora_solution_pack_xml_admin(array $form, array &$form_state) {
-  $module_path = drupal_get_path('module', 'islandora_solution_pack_xml');
+function islandora_solution_pack_remote_resource_admin(array $form, array &$form_state) {
+  $form = array();
+  $form['islandora_solution_pack_remote_resource_redirection_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Redirection type'),
+    '#default_value' => variable_get('islandora_solution_pack_remote_resource_redirection_type', 'interstitial'),
+    '#options' => array(
+      'interstitial' => t('show user an interstitial page'),
+      'goto' => t('automatic redirect'),
+    ),
+    '#description' => t('Choose whether the user is shown an interstitial page containing a link to the remote resource, or is automatically redirected.'),
+  );  
+
+  $module_path = drupal_get_path('module', 'islandora_solution_pack_remote_resource');
   $default_tn_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . $module_path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'remote.png';
-  if (file_exists(variable_get('islandora_solution_pack_xml_default_thumbnail_path', $default_tn_path))) {
+  if (file_exists(variable_get('islandora_solution_pack_remote_resource_default_thumbnail_path', $default_tn_path))) {
     $tn_exists_markup = '<br /><img src="/misc/watchdog-ok.png" /> File exists.';
   }
   else {
     $tn_exists_markup = '<br /><img src="/misc/watchdog-error.png" /> File does not exist.';
   }
-  $form['islandora_solution_pack_xml_default_thumbnail_path'] = array(
+  $form['islandora_solution_pack_remote_resource_default_thumbnail_path'] = array(
     '#title' => t('Path to default thumbnail image'),
     '#type' => 'textfield',
     '#size' => 100,
-    '#default_value' => variable_get('islandora_solution_pack_xml_default_thumbnail_path', $default_tn_path),
-    '#description' => t('Absolute filesystem path to the default thumbnail image for XML objects. Leave empty to not attach a thumbnail. !tn_exists', array('!tn_exists' => $tn_exists_markup)),
-    '#maxlength' => 255,
-  );
-  $form['islandora_solution_pack_xml_metadata_dsid'] = array(
-    '#title' => t('Metadata datastream ID'),
-    '#type' => 'textfield',
-    '#size' => 20,
-    '#default_value' => variable_get('islandora_solution_pack_xml_metadata_dsid', 'MODS'),
-    '#description' => t('ID of datastream whose presence triggers display of metadata and description in object display. Leave blank to never display metadata and description.'),
+    '#default_value' => variable_get('islandora_solution_pack_remote_resource_default_thumbnail_path', $default_tn_path),
+    '#description' => t('Absolute filesystem path to the default thumbnail image for remote resource objects. Leave empty to not attach a thumbnail. !tn_exists', array('!tn_exists' => $tn_exists_markup)),
     '#maxlength' => 255,
   );
 
-  module_load_include('inc', 'islandora', 'includes/solution_packs');
-  $form += islandora_viewers_form('islandora_xml_viewers', 'application/xml');
   return system_settings_form($form);
 }

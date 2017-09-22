@@ -10,17 +10,15 @@
  */
 function islandora_solution_pack_remote_resource_menu() {
   $items = array();
-/*
   $items['admin/islandora/solution_pack_config/remote_resource'] = array(
-    'title' => 'Simple XML Solution Pack',
-    'description' => 'Configure the Simple XML Object Solution Pack.',
+    'title' => 'Remote Resource Solution Pack',
+    'description' => 'Configure the Remote Resource Solution Pack.',
     'page callback' => 'drupal_get_form',
     'access arguments' => array('administer site configuration'),
-    'page arguments' => array('islandora_solution_pack_xml_admin'),
+    'page arguments' => array('islandora_solution_pack_remote_resource_admin'),
     'file' => 'includes/admin.form.inc',
     'type' => MENU_NORMAL_ITEM,
   );
-*/
   $items['islandora/object/%islandora_object/datastreams/remote_resource/OBJ/edit'] = array(
     'title' => 'Edit Remote Resouce URL',
     'file' => 'includes/remote_resource_edit.form.inc',
@@ -181,6 +179,12 @@ function islandora_solution_pack_remote_resource_islandora_sp_remote_resource_is
  * Implements hook_CMODEL_PID_islandora_view_object().
  */
 function islandora_solution_pack_remote_resource_islandora_sp_remote_resource_islandora_view_object($object, $page_number, $page_size) {
-  $output = theme('islandora_solution_pack_remote_resource_default', array('islandora_object' => $object));
-  return array('' => $output);
+  if (variable_get('islandora_solution_pack_remote_resource_redirection_type', 'interstitial') == 'goto') {
+    $remote_url = $object['OBJ']->content;
+    drupal_goto($remote_url);
+  }
+  else {
+    $output = theme('islandora_solution_pack_remote_resource_default', array('islandora_object' => $object));
+    return array('' => $output);
+  }
 }
