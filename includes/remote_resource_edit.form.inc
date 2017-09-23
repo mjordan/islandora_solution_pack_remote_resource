@@ -55,12 +55,6 @@ function islandora_solution_pack_remote_resource_edit_url_form_submit($form, &$f
     $url = $object['OBJ'];
   }
   $url->setContentFromString($form_state['values']['url']);
-  try {
-    $object->ingestDatastream($url);
-  }
-  catch (Exception $e) {
-    // Do something?
-  }
   drupal_set_message(t("Remote URL updated for !object.", array('!object' => $object->id)));
   drupal_goto("islandora/object/{$object->id}/manage/datastreams");
 }
