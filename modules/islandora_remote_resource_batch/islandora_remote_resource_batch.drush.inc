@@ -12,7 +12,7 @@ function islandora_remote_resource_batch_drush_command() {
   $items = array();
 
   $items['islandora_remote_resource_batch_preprocess'] = array(
-    'aliases' => array('isxbp'),
+    'aliases' => array('irrbp'),
     'description' => 'Preprocess Islandora Remote Resource objects into batch queue entries.',
     'drupal dependencies' => array('islandora_batch', 'islandora_solution_pack_remote_resource'),
     'options' => array(
@@ -35,6 +35,21 @@ function islandora_remote_resource_batch_drush_command() {
       'parent_relationship_pred' => array(
         'description' => 'The predicate of the relationship to the parent. Defaults to "isMemberOf".',
         'value' => 'optional',
+      ),
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+  );
+
+  // Does not use the Batch API. Included in the Remote Resource Batch module
+  // anyway. URL value is indexed in the Solr field 'OBJ_t'.
+  $items['islandora_remote_resource_batch_sync'] = array(
+    'aliases' => array('irrbs'),
+    'description' => 'Updates datastreams (other than OBJ) in Islandora Remote Resource objects.',
+    'drupal dependencies' => array('islandora_batch', 'islandora_solution_pack_remote_resource'),
+    'options' => array(
+      'target' => array(
+        'description' => 'The target directory to scan.',
+        'required' => TRUE,
       ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
@@ -65,6 +80,15 @@ function drush_islandora_remote_resource_batch_preprocess() {
   $preprocessor = new IslandoraRemoteResourceBatchPreprocessor($connection, $parameters);
   $preprocessed = islandora_batch_handle_preprocessor($preprocessor);
   drush_log(t("SetId: @s", array('@s' => $preprocessor->getSetId())), "ok");
+}
+
+/**
+ * Implements hook_drush_command().
+ */
+function drush_islandora_remote_resource_batch_sync() {
+  module_load_include('inc', 'islandora_remote_resource_batch', 'includes/sync');
+  $dir_to_scan = drush_get_option('target');
+  islandora_solution_pack_remote_resource_sync($dir_to_scan);
 }
 
 /**
