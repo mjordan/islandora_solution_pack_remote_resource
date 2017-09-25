@@ -22,6 +22,8 @@ Then, to perform the ingest:
 
 This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and you must have at least a file for the OJB datastream. All other files are optional. Using this module, you can batch ingest objects of content model 'islandora:sp_remote_resource' having the following datastreams.
 
+Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is very effective. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) is currently under development.
+
 ### OBJ datastreams
 
 Text file with the extension `.txt`. This file contains the URL of the remote resource, e.g.:
@@ -44,7 +46,7 @@ OBJ file base name with the double extension `.MODS.xml`.
 
 Objects managed by the Remote Resource Solution Pack only require an OBJ datastream that contains the URL of the remote resource. MODS, DC, and TN datastreams are optional. If they are noto present on ingest, Islandora will generate default datastreams.
 
-For local purposes, you may want your objects to have datastreams in addition to a MODS, DC, or TN. To ingest additional datastreams, add files you want to create the datastreams from using the following file naming convention: for a base text file with the name somefile.txt, a datastream with the datastream ID 'JPEG' will be created from a file with the name `somefile.JPEG.jpg`.
+For local purposes, you may want your objects to have datastreams in addition to a MODS, DC, or TN. For example, you may want to ingest OCR datastreams so the full text is indexed. To ingest additional datastreams, add files you want to create the datastreams from using the following file naming convention: for a base text file with the name somefile.txt, a datastream with the datastream ID 'JPEG' will be created from a file with the name `somefile.JPEG.jpg`.
 
 The datastream's mimetype will be derived from its extension, in the example above, `.jpg`. Its label will be 'JPEG datastream'. The DSID and extension have no relationship, they just happend to be consistent in this example.
 
