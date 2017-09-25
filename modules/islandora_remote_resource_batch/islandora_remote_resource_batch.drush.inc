@@ -88,7 +88,7 @@ function drush_islandora_remote_resource_batch_preprocess() {
 function drush_islandora_remote_resource_batch_sync() {
   module_load_include('inc', 'islandora_remote_resource_batch', 'includes/sync');
   $dir_to_scan = drush_get_option('target');
-  islandora_solution_pack_remote_resource_sync($dir_to_scan);
+  islandora_remote_resource_batch_sync($dir_to_scan);
 }
 
 /**

@@ -1,17 +1,18 @@
 # Islandora Remote Resource Batch
 
-Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack.
-
+Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack. Also handles updating non-OBJ datastream files.
+ 
 ## Requirements
 
 * [Islandora Batch](https://github.com/Islandora/islandora_batch)
-* [Islandora Remote_resource Solution Pack](https://github.com/mjordan/islandora_solution_pack_remote_resource)
+* [Islandora Solr Search](https://github.com/Islandora/islandora_solr_search)
+* [Islandora Remote Resource Solution Pack](https://github.com/mjordan/islandora_solution_pack_remote_resource)
 
 ## Usage
 
 Enable this module, then run its drush command to import objects:
 
-`drush --user=admin islandora_remote_resource_batch_preprocess --target=/path/to/XML/files --namespace=foo --parent=islandora:mycollection`
+`drush --user=admin islandora_remote_resource_batch_preprocess --target=/path/to/datastream/files --namespace=foo --parent=islandora:mycollection`
 
 Then, to perform the ingest:
 
@@ -28,6 +29,8 @@ Text file with the extension `.txt`. This file contains the URL of the remote re
 ```
 http://example.com/some/path
 ```
+
+To avoid duplication, prior to adding new objects to the batch ingest queue, this module queries Solr to determine if an object already exists that points to the value of the remote URL.
 
 ### TN datastreams
 
@@ -88,13 +91,23 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ├── baz.txt
 ```
 
+## Syncing updated datastreams
+
+Copies of TN and MODS (and any optional datastreams) that are part of remote resrource objects will inevitably become out of sync with their originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files:
+
+`drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
+
+This command generates a checksum on the existing datastream content and the content of the new file, and only replaces the old with the new content if the checksums differ.
+
+Datastream files are prepared in the same way as they are for ingestion, as described above. `islandora_remote_resource_batch_sync`. OBJ files are not updated, only TN, MODS, and other datastreams. In fact datastream files for new objects and for existing objects can be located in the same directory; `islandora_remote_resource_batch_preprocess` skips objects that already exsit, and `islandora_remote_resource_batch_sync` only updates existing objects.
+
 ## Maintainer
 
 * [Mark Jordan](https://github.com/mjordan)
 
 ## Development and feedback
 
-Pull requests are welcome, as are use cases and suggestions.
+See the README in [Islandora Remote Resource Solution Pack](https://github.com/mjordan/islandora_solution_pack_remote_resource).
 
 ## License
 

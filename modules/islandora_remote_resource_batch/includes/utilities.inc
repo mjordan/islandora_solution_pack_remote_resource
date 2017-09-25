@@ -6,6 +6,32 @@
  */
 
 /**
+ * Queries Islandora's Solr index to get an object's PID.
+ *
+ * @param string $remote_url
+ *   The remote URL to query Solr for.
+ *
+ * @return string|bool
+ *   The corresponding PID, or FALSE if none is found.
+ */
+function islandora_remote_resource_batch_query_solr($remote_url) {
+  $query = 'OBJ_t:"' . trim($remote_url) . '"';
+  $query_processor = new IslandoraSolrQueryProcessor();
+  $query_processor->solrQuery = $query;
+  $query_processor->solrParams['fl'] = 'PID';
+  $query_processor->executeQuery(FALSE);
+  // @todo: Check to see if the number found is > 1 and if so,
+  // report it and move on.
+  if ($query_processor->islandoraSolrResult['response']['numFound'] === 1) {
+    $pid = $query_processor->islandoraSolrResult['response']['objects'][0]['solr_doc']['PID'];
+    return $pid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
  * Applies an XSLT transform to an XML string.
  *
  * @param string $xslt

@@ -16,9 +16,9 @@ The main use case for this solution pack is to allow an Islandora instance to ag
 
 Configuration options are available at `admin/islandora/solution_pack_config/remote_resource`.
 
-## Batch loading
+## Batch loading and synching
 
-Objects managed by this module cannot be loaded using the [Islandora Batch](https://github.com/Islandora/islandora_batch), but a custom Drush-based loader is available in the `modules` subdirectory. Its README provides details on preparing content and ingesting it.
+Objects managed by this module cannot be loaded using the [Islandora Batch](https://github.com/Islandora/islandora_batch), but a custom Drush-based loader is available in the `modules` subdirectory. This module also handles synching datasteams on existing objects that have changed. Its README provides details on preparing content and ingesting/updating it.
 
 ## Maintainer
 
