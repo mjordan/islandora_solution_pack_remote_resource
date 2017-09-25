@@ -42,7 +42,9 @@ OBJ file base name with the double extension `.MODS.xml`.
 
 ### Additional, arbitrary datastreams 
 
-Objects managed by the Remote Resource Solution Pack only require an OBJ datastream that contains the URL of the remote resource. MODS, DC, and TN datastreams are optional. For local purposes, you may want your objects to have datastreams in addition to a MODS, DC, or TN. To ingest additional datastreams, add files you want to create the datastreams from using the following file naming convention: for a base text file with the name somefile.txt, a datastream with the datastream ID 'JPEG' will be created from a file with the name `somefile.JPEG.jpg`.
+Objects managed by the Remote Resource Solution Pack only require an OBJ datastream that contains the URL of the remote resource. MODS, DC, and TN datastreams are optional. If they are noto present on ingest, Islandora will generate default datastreams.
+
+For local purposes, you may want your objects to have datastreams in addition to a MODS, DC, or TN. To ingest additional datastreams, add files you want to create the datastreams from using the following file naming convention: for a base text file with the name somefile.txt, a datastream with the datastream ID 'JPEG' will be created from a file with the name `somefile.JPEG.jpg`.
 
 The datastream's mimetype will be derived from its extension, in the example above, `.jpg`. Its label will be 'JPEG datastream'. The DSID and extension have no relationship, they just happend to be consistent in this example.
 
@@ -93,11 +95,11 @@ Same as the previous example, but for the object created from foo.txt, an additi
 
 ## Syncing updated datastreams
 
-Copies of TN and MODS (and any optional datastreams) that are part of remote resrource objects will inevitably become out of sync with their originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files:
+Copies of TN and MODS (and any optional datastreams) that are part of remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target`` option:
 
 `drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
 
-This command generates a checksum on the existing datastream content and the content of the new file, and only replaces the old with the new content if the checksums differ.
+To avoid needlessly replacing datastream files, this command generates a checksum for the existing datastream content and for the content of the new file, and only replaces the old with the new content if the checksums differ.
 
 Datastream files are prepared in the same way as they are for ingestion, as described above. `islandora_remote_resource_batch_sync`. OBJ files are not updated, only TN, MODS, and other datastreams. In fact datastream files for new objects and for existing objects can be located in the same directory; `islandora_remote_resource_batch_preprocess` skips objects that already exsit, and `islandora_remote_resource_batch_sync` only updates existing objects.
 
