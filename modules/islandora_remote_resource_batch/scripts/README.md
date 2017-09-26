@@ -6,16 +6,16 @@ The script included in this directory will prepare content suitable for batch lo
 1. renames the thumbnail file to include the 'TN' datastream ID
 1. generates a .txt file containing the remote object's URL
 
-Also in this directory is a sample MIK configuration file that can be used to harvest objects from another Islandora instance. Combined, the configuration file and the post-write hook script will prepare harvested content that is ready to batch ingest.
+Also in this directory is a sample MIK configuration file that can be used in conjuction with the script to harvest objects from another Islandora instance. Combined, the configuration file and the post-write hook script will prepare harvested content that is ready to batch ingest.
 
-The Move to Islandora Kit toolchain that this configuration file and script work with is "[OAI PMH for Islandora repositories](https://github.com/MarcusBarnes/mik/wiki/Toolchain:-OAI-PMH-for-Islandora-repositories). This toolchain harvests content from an Islandora instance for loading into another. Originally created as a training and testing toolchain, but it is completely suitable for harvesting data for discovery purposes as provided by the Islandora Remote Resource Solution Pack.
+The Move to Islandora Kit toolchain that this configuration file and script work with is "[OAI PMH for Islandora repositories](https://github.com/MarcusBarnes/mik/wiki/Toolchain:-OAI-PMH-for-Islandora-repositories)". This toolchain harvests content from an Islandora instance for loading into another. Originally created as a training and testing toolchain, it is completely suitable for harvesting data for discovery purposes as endabled by the Islandora Remote Resource Solution Pack.
 
 ## Usage
 
 1. Install the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik).
 1. Copy `remote_resource_oai.ini` into your MIK directory.
 1. Copy `remote_resource.php` into MIK's `extras/scripts/postwritehooks` directory.
-1. Adjust the settings in the .ini file as necessary.
+1. Adjust the settings (OAI-PMH configuration, file paths, etc.) in the .ini file as necessary.
 1. Run MIK: `./mik -c remote_resource_oai.ini`. During testing, it is a good idea to limit the number of objects harvested by including the `-l` option, e.g., `./mik -c remote_resource_oai.ini -l 5`.
 
 The resulting output is ready to ingest using the Islandora Remote Resource Batch module.
