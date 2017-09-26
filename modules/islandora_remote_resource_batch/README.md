@@ -1,6 +1,6 @@
 # Islandora Remote Resource Batch
 
-Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack. Also handles updating non-OBJ datastream files.
+Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack (i.e., of content model 'islandora:sp_remote_resource'). Also handles updating non-OBJ datastream files.
  
 ## Requirements
 
@@ -20,9 +20,9 @@ Then, to perform the ingest:
 
 ## Preparing your content files for ingesting
 
-This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and you must have at least a file for the OJB datastream. All other files are optional. Using this module, you can batch ingest objects of content model 'islandora:sp_remote_resource' having the following datastreams.
+This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and for each object you want to ingest, you must have at least a file representing its OJB datastream. All other files are optional.
 
-Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is very effective. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) is currently under development.
+Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is very effective. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik), and an MIK post-write hook script that will rename the files harvested via OAI-PMH according to the conventions described below, and a sample MIK configuration file, are available in the '[scripts](scripts/README.md)' directory.
 
 ### OBJ datastreams
 
