@@ -97,7 +97,7 @@ Same as the previous example, but for the object created from foo.txt, an additi
 
 ## Syncing updated datastreams
 
-Copies of TN and MODS (and any optional datastreams) harvested from remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target`` option:
+Copies of TN and MODS (and any optional datastreams) harvested from remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target` option:
 
 `drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
 
