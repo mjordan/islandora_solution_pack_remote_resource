@@ -22,7 +22,7 @@ Then, to perform the ingest:
 
 This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and for each object you want to ingest, you must have at least a file representing its OJB datastream. All other files are optional.
 
-Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is very effective. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik), and an MIK post-write hook script that will rename the files harvested via OAI-PMH according to the conventions described below, and a sample MIK configuration file, are available in the '[scripts](scripts/README.md)' directory.
+Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is a good strategy. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) is available in the '[scripts](scripts/README.md)' directory.
 
 ### OBJ datastreams
 
@@ -97,7 +97,7 @@ Same as the previous example, but for the object created from foo.txt, an additi
 
 ## Syncing updated datastreams
 
-Copies of TN and MODS (and any optional datastreams) that are part of remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target`` option:
+Copies of TN and MODS (and any optional datastreams) harvested from remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target`` option:
 
 `drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
 
