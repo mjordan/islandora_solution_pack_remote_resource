@@ -42,15 +42,27 @@ $writer = new Oaipmh($config);
 
 $normalized_record_key = $writer->normalizeFilename($record_key);
 
-// Rename the .xml file to .DC.xml. @todo: Add logic to accommodate metadata prefixes other than
-// the default oai_dc, e.g., oai_mods.
-$oai_dc_path = $config['WRITER']['output_directory'] . DIRECTORY_SEPARATOR .  $normalized_record_key . '.xml';
-$oai_dc_pathinfo = pathinfo($oai_dc_path);
-$dest_oai_dc_path = $config['WRITER']['output_directory'] . DIRECTORY_SEPARATOR . $oai_dc_pathinfo['filename'] .
-    '.DC.' . $oai_dc_pathinfo['extension'];
-if (!rename($oai_dc_path, $dest_oai_dc_path)) {
-    $error_log->addWarning("Problem with DC file",
-        array('Source file' => $oai_dc_path, 'Dest file' => $dest_oai_dc_path, 'Error' => 'Could not rename DC file.'));
+if (isset($config['FETCHER']['metadata_prefix'])) {
+    if ($config['FETCHER']['metadata_prefix'] == 'oai_dc') {
+        $metadata_dsid = 'DC';
+    }
+    if ($config['FETCHER']['metadata_prefix'] == 'oai_mods') {
+        $metadata_dsid = 'MODS';
+    }
+}
+else {
+    // If the metadata_prefix isnt' specified, use DC.
+    $metadata_dsid = 'DC';
+}
+
+// Rename the .xml file to .DC.xml, .MODS.xml, etc.
+$oai_metadata_path = $config['WRITER']['output_directory'] . DIRECTORY_SEPARATOR .  $normalized_record_key . '.xml';
+$oai_metadata_pathinfo = pathinfo($oai_metadata_path);
+$dest_oai_metadata_path = $config['WRITER']['output_directory'] . DIRECTORY_SEPARATOR . $oai_metadata_pathinfo['filename'] .
+    '.' . $metadata_dsid . '.' . $oai_metadata_pathinfo['extension'];
+if (!rename($oai_metadata_path, $dest_oai_metadata_path)) {
+    $error_log->addWarning("Problem with metadata file",
+        array('Source file' => $oai_metadata_path, 'Dest file' => $dest_oai_metadata_path, 'Error' => 'Could not rename metadata file.'));
 }
 
 // Rename the .jpeg file to .TN.jpeg.
