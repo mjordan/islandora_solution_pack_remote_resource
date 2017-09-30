@@ -46,7 +46,7 @@ if (isset($config['FETCHER']['metadata_prefix'])) {
     if ($config['FETCHER']['metadata_prefix'] == 'oai_dc') {
         $metadata_dsid = 'DC';
     }
-    if ($config['FETCHER']['metadata_prefix'] == 'oai_mods') {
+    if ($config['FETCHER']['metadata_prefix'] == 'mods') {
         $metadata_dsid = 'MODS';
     }
 }
