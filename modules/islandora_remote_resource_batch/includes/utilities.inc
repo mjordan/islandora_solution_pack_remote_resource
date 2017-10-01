@@ -15,13 +15,12 @@
  *   The corresponding PID, or FALSE if none is found.
  */
 function islandora_remote_resource_batch_query_solr($remote_url) {
+  // @todo: Change query so that the remote URL is not searched as a substring.
   $query = 'OBJ_t:"' . trim($remote_url) . '"';
   $query_processor = new IslandoraSolrQueryProcessor();
   $query_processor->solrQuery = $query;
   $query_processor->solrParams['fl'] = 'PID';
   $query_processor->executeQuery(FALSE);
-  // @todo: Check to see if the number found is > 1 and if so,
-  // report it and move on.
   if ($query_processor->islandoraSolrResult['response']['numFound'] === 1) {
     $pid = $query_processor->islandoraSolrResult['response']['objects'][0]['solr_doc']['PID'];
     return $pid;
@@ -87,26 +86,37 @@ function islandora_remote_resource_batch_apply_xslt($xslt, $input_xml, $params =
 function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
   $result = drupal_http_request($remote_url);
   if (isset($result->error)) {
-    // @todo: Add drush log and watchdog entry.
+    drush_log(dt("Failed to retrieve content from remote resource !url, so cannot get title: !e",
+      array('!url' => $remote_url, '!e' => $result->error)), 'warning');
     return FALSE;
   }
   else {
     $code = (string) $result->code;
     if (preg_match('/^2|3/', $code)) {
       libxml_use_internal_errors(TRUE);
-      $dom = new DOMDocument();
-      $dom->loadHTML($result->data);
-      $titles = $dom->getElementsByTagName('title');
-      if ($titles->length > 0) {
-        return $titles->item(0)->nodeValue;
+      try {
+        $dom = new DOMDocument();
+        $dom->loadHTML($result->data);
+        $titles = $dom->getElementsByTagName('title');
+        if ($titles->length > 0) {
+          return $titles->item(0)->nodeValue;
+        }
+        else {
+          drush_log(dt("Failed to parse title from remote resource !url: title element not found",
+            array('!url' => $remote_url)),
+              'warning'
+            );
+          return FALSE;
+        }
       }
-      else {
-        // @todo: Add drush log and watchdog entry.
-        return FALSE;
+      catch (exception $e) {
+        drush_log(dt("Failed to parse title from remote resource !url: !em",
+          array('!url' => $remote_url, '!em' => $e->getMessage())), 'warning');
       }
     }
     else {
-      // @todo: Add drush log and watchdog entry.
+      drush_log(dt("Failed to parse title from remote resource !url: HTTP response code !code",
+        array('!url' => $remote_url, '!code' => $code)), 'warning');
       return FALSE;
     }
   }

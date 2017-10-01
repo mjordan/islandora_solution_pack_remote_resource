@@ -18,6 +18,8 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   public function __construct(IslandoraTuque $connection, string $txt_file_path, $batch_parameters) {
     parent::__construct(NULL, $connection->repository);
 
+    $this->label = 'Untitled';
+
     // Using the default directory scan method of ingesting, this value is a
     // path to the .txt file for the object. Using the optional 'url_list'
     // method of ingesting, this value is a URL. Yes, overloading this
