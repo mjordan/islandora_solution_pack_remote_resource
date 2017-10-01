@@ -23,6 +23,7 @@ function islandora_solution_pack_remote_resource_uninstall() {
 
   $variables = array(
     'islandora_solution_pack_remote_resource_default_thumbnail_path',
+    'islandora_solution_pack_remote_resource_show_tn',
     'islandora_solution_pack_remote_resource_redirection_type',
   );
   array_walk($variables, 'variable_del');

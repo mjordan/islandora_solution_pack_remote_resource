@@ -18,7 +18,12 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   public function __construct(IslandoraTuque $connection, string $txt_file_path, $batch_parameters) {
     parent::__construct(NULL, $connection->repository);
 
+    // Using the default directory scan method of ingesting, this value is a
+    // path to the .txt file for the object. Using the optional 'url_list'
+    // method of ingesting, this value is a URL. Yes, overloading this
+    // value is not optimal.
     $this->txtObjFilePath = $txt_file_path;
+
     $this->preprocessorParameters = $batch_parameters;
   }
 
@@ -26,6 +31,33 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    * Assemble the base datastreams.
    */
   public function batchProcess() {
+    if (strlen($this->preprocessorParameters['url_list'])) {
+      module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
+      $this->label = islandora_remote_resource_batch_fetch_remote_title($this->txtObjFilePath);
+
+      // OBJ datastream.
+      $obj = $this->constructDatastream('OBJ', 'M');
+      $obj->label = 'REMOTE_URL';
+      $obj->mimetype = 'text/plain';
+      $obj->setContentFromString($this->txtObjFilePath, FALSE);
+      $this->ingestDatastream($obj);
+
+      // TN datastream.
+      if ($tn = $this->getTn()) {
+        $this->ingestDatastream($tn);
+      }
+
+      $this->addRelationships();
+
+      // Indicate that this object is ready to be ingested. If we are using
+      // the 'url_list' ingest method, return here since there are not other
+      // datastreams to process.
+      return ISLANDORA_BATCH_STATE__DONE;
+    }
+
+    // If we haven't returned yet, assume we're using the default directory
+    // scan method of ingesting.
+
     // OBJ datastream.
     $obj = $this->constructDatastream('OBJ', 'M');
     $obj->label = 'REMOTE_URL';

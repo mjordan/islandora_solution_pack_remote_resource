@@ -29,6 +29,14 @@ function islandora_solution_pack_remote_resource_admin(array $form, array &$form
     '#description' => t('Choose whether the user is shown an interstitial page containing a link to the remote resource, or is automatically redirected.'),
   );
 
+  $form['islandora_solution_pack_remote_resource_show_tn'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Include thumbnail in object display.'),
+    '#default_value' => variable_get('islandora_solution_pack_remote_resource_show_tn', 1),
+    '#description' => t("Check this option if you want to include the object's thumbnail
+      when displaying the object."),
+  );
+
   $module_path = drupal_get_path('module', 'islandora_solution_pack_remote_resource');
   $default_tn_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . $module_path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'remote.png';
   if (file_exists(variable_get('islandora_solution_pack_remote_resource_default_thumbnail_path', $default_tn_path))) {

@@ -4,4 +4,5 @@ dependencies[] = islandora
 package = Islandora Solution Packs
 core = 7.x
 version = 7.x-dev
+; stylesheets[all][] = css/islandora_solution_pack_remote_resource_default.theme.css
 configure = admin/islandora/solution_pack_config/remote_resource

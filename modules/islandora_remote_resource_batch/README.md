@@ -94,6 +94,24 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ├── bar.TN.png
 ├── baz.txt
 ```
+## Ingesting from a URL list
+
+Another option for ingesting objects is to use a simple list of remote URLs. To use this option, replace the `--target` option with `--url_list`, giving it a value of the absolute path to a list of remote URLs:
+
+`drush --user=admin islandora_remote_resource_batch_preprocess --url_list=/path/to/urls.txt --namespace=foo --parent=islandora:mycollection`
+
+The file containing the list should have one URL per line, e.g.:
+
+```
+http://example.com
+http://foobar.org
+http://yougetthepicture.net/some/file.htm
+```
+
+Using this option, you cannot specify additional datastreams. Each object will be assigned a default TN, MODS, and DC datastream. However, the batch module will attempt to retrive the web page at each URL and parse out its title, and assign that title to the ingested object as its label. If it cannot retrieve or parse the title, a default label will be assigned to the object.
+
+The `--target` and `--url_list` options are mutually exclusive. If you include both, the `--url_list` option will be used.
+
 
 ## Syncing updated datastreams
 

@@ -8,6 +8,11 @@
 
 <div class="islandora-remote-resource-object islandora">
   <div class="islandora-remote-resource-content-wrapper clearfix">
+    <?php if ($display_tn): ?>
+      <div class="islandora-remote-resource-display-tn">
+        <?php print $tn_markup; ?>
+      </div>
+    <?php endif; ?>
     <?php if (isset($islandora_content)): ?>
       <div class="islandora-remote-resource-content">
         <?php print $islandora_content; ?>

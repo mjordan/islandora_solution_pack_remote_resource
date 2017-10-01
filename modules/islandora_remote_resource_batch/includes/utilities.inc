@@ -73,3 +73,40 @@ function islandora_remote_resource_batch_apply_xslt($xslt, $input_xml, $params =
     );
   }
 }
+
+/**
+ * Attempts to retrieve the remote web page and parse it title.
+ *
+ * @param string $remote_url
+ *   The URL of the remote resource.
+ *
+ * @return string
+ *   The title parsed out from the HTML at the remote URL, or the default
+ *   title.
+ */
+function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
+  $default_title = t("Title could not be retrieved");
+  $result = drupal_http_request($remote_url);
+  if (isset($result->error)) {
+    return $default_title;
+  }
+  else {
+    $code = (string) $result->code;
+    if (preg_match('/^2|3/', $code)) {
+      libxml_use_internal_errors(TRUE);
+      $dom = new DOMDocument();
+      $dom->loadHTML($result->data);
+      $titles = $dom->getElementsByTagName('title');
+      if ($titles->length > 0) {
+        return $titles->item(0)->nodeValue;
+      }
+      else {
+        return $default_title;
+      }
+    }
+    else {
+      return $default_title;
+      // @todo: Add watchdog entry.
+    }
+  }
+}

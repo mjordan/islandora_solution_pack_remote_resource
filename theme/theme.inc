@@ -17,14 +17,13 @@
 function islandora_solution_pack_remote_resource_preprocess_islandora_solution_pack_remote_resource_default(array &$variables) {
   drupal_add_js('misc/form.js');
   drupal_add_js('misc/collapse.js');
+  drupal_add_css(drupal_get_path('module', 'islandora_solution_pack_remote_resource') . '/css/default.theme.css');
   module_load_include('inc', 'islandora', 'includes/datastream');
   module_load_include('inc', 'islandora', 'includes/utilities');
   module_load_include('inc', 'islandora', 'includes/metadata');
 
   $islandora_object = $variables['islandora_object'];
 
-  // We should eventually remove the DC object and dc_array code as it only
-  // exists to not break legacy implementations.
   try {
     if (isset($islandora_object['DC']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['DC'])) {
       $dc = $islandora_object['DC']->content;
@@ -45,6 +44,24 @@ function islandora_solution_pack_remote_resource_preprocess_islandora_solution_p
 
   $remote_resource_url = $islandora_object['OBJ']->content;
   $content = t('This resource is hosted on another website: <a href="!url">!url</a>.', array('!url' => $remote_resource_url));
+
+  if (variable_get('islandora_solution_pack_remote_resource_show_tn', 1)) {
+    if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
+      $variables['display_tn'] = TRUE;
+      $params = array(
+        'path' => "/islandora/object/" . $islandora_object->id . "/datastream/TN/view",
+        'alt' => $islandora_object->label,
+        'title' => $islandora_object->label,
+      );
+      $variables['tn_markup'] = theme('image', $params);
+    }
+    else {
+      $variables['display_tn'] = FALSE;
+    }
+  }
+  else {
+    $variables['display_tn'] = FALSE;
+  }
 
   $variables['islandora_content'] = $content;
 }
