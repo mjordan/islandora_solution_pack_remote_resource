@@ -1,6 +1,6 @@
 # Islandora Remote Resource Batch
 
-Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack (i.e., of content model 'islandora:sp_remote_resource'). Also handles updating non-OBJ datastream files.
+Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack (i.e., of content model 'islandora:sp_remote_resource'). Can ingest objects from either a directory containing datastream files or from a simple list of remote URLs. Also handles updating non-OBJ datastream files.
  
 ## Requirements
 
@@ -96,7 +96,7 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ```
 ## Ingesting from a URL list
 
-Another option for ingesting objects is to use a simple list of remote URLs. To use this option, replace the `--target` option with `--url_list`, giving it a value of the absolute path to a list of remote URLs:
+Another option for ingesting objects is to use a simple list of remote URLs. To use this option, replace the `--target` option with `--url_list`, giving it a value of the absolute path to a plain text file containing list of remote URLs:
 
 `drush --user=admin islandora_remote_resource_batch_preprocess --url_list=/path/to/urls.txt --namespace=foo --parent=islandora:mycollection`
 

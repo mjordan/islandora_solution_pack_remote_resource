@@ -80,15 +80,15 @@ function islandora_remote_resource_batch_apply_xslt($xslt, $input_xml, $params =
  * @param string $remote_url
  *   The URL of the remote resource.
  *
- * @return string
- *   The title parsed out from the HTML at the remote URL, or the default
- *   title.
+ * @return string|bool
+ *   The title parsed out from the HTML at the remote URL, or FALSE
+ *   if the title could not be parsed.
  */
 function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
-  $default_title = t("Title could not be retrieved");
   $result = drupal_http_request($remote_url);
   if (isset($result->error)) {
-    return $default_title;
+    // @todo: Add drush log and watchdog entry.
+    return FALSE;
   }
   else {
     $code = (string) $result->code;
@@ -101,12 +101,13 @@ function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
         return $titles->item(0)->nodeValue;
       }
       else {
-        return $default_title;
+        // @todo: Add drush log and watchdog entry.
+        return FALSE;
       }
     }
     else {
-      return $default_title;
-      // @todo: Add watchdog entry.
+      // @todo: Add drush log and watchdog entry.
+      return FALSE;
     }
   }
 }

@@ -33,7 +33,9 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   public function batchProcess() {
     if (strlen($this->preprocessorParameters['url_list'])) {
       module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
-      $this->label = islandora_remote_resource_batch_fetch_remote_title($this->txtObjFilePath);
+      if ($label = islandora_remote_resource_batch_fetch_remote_title($this->txtObjFilePath)) {
+        $this->label = $label;
+      }
 
       // OBJ datastream.
       $obj = $this->constructDatastream('OBJ', 'M');

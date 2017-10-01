@@ -16,16 +16,12 @@ function islandora_remote_resource_batch_drush_command() {
     'description' => 'Preprocess Islandora Remote Resource objects into batch queue entries.',
     'drupal dependencies' => array('islandora_batch', 'islandora_solution_pack_remote_resource'),
     'options' => array(
-      'target' => array(
-        'description' => 'The target directory to scan.',
-        // 'required' => TRUE,
-      ),
       'namespace' => array(
         'description' => 'The namespace for objects created by this command.',
         'required' => TRUE,
       ),
       'parent' => array(
-        'description' => 'The collection to which the generated items should be added.',
+        'description' => 'The PID of the collection to which the generated items should be added.',
         'required' => TRUE,
       ),
       'parent_relationship_uri' => array(
@@ -37,11 +33,21 @@ function islandora_remote_resource_batch_drush_command() {
         'value' => 'optional',
       ),
       'url_list' => array(
-        'description' => 'A file containing the URLs of remote resources to ingest. See the README for more information.',
+        'description' => 'Absolute path to a file containing the URLs of remote resources to ingest. See the README for more information.',
       ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
   );
+  if (DRUSH_VERSION >= 7) {
+    $items['islandora_remote_resource_batch_preprocess']['options']['scan_target'] = array(
+      'description' => 'Absolute path to the target directory to scan.',
+    );
+  }
+  else {
+    $items['islandora_remote_resource_batch_preprocess']['options']['target'] = array(
+      'description' => 'Absolute path to the target directory to scan.',
+    );
+  }
 
   // Does not use the Batch API. Included in the Remote Resource Batch module
   // anyway. URL value is indexed in the Solr field 'OBJ_t'.
