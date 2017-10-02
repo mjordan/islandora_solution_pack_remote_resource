@@ -75,7 +75,7 @@ function islandora_solution_pack_remote_resource_create_form_submit(array $form,
     $ds = $object['OBJ'];
   }
   $ds->setContentFromString($form_state['values']['url']);
-  $ds->label = 'REMOTE_URL';
+  $ds->label = 'Remote URL';
   $ds->mimetype = 'text/plain';
 
   if (isset($form_state['values']['thumbnail']) && ($form_state['values']['thumbnail'] > 0)) {

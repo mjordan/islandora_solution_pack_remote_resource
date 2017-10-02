@@ -53,19 +53,12 @@ function islandora_solution_pack_remote_resource_islandora_edit_datastream_regis
 
 /**
  * Implements hook_theme().
- *
- * We supply a pattern so we can overide templates at the theme level if needed.
- * We can append a pid to a template and the new template file will be called
- * (the pid's colon should be replaced with a dash).
- * An example template might be named:
- *   "islandora-solution-pack-remote-resource--islandora-100.tpl.php".
  */
 function islandora_solution_pack_remote_resource_theme($existing, $type, $theme, $path) {
   return array(
-    'islandora_solution_pack_remote_resource_default' => array(
-      'template' => 'theme/islandora-solution-pack-remote-resource-default',
+    'islandora_solution_pack_remote_resource' => array(
+      'template' => 'theme/islandora-solution-pack-remote-resource',
       'file' => 'theme/theme.inc',
-      'pattern' => 'islandora_solution_pack_remote_resource__',
       'variables' => array('islandora_object' => NULL),
     ),
   );
@@ -184,7 +177,7 @@ function islandora_solution_pack_remote_resource_islandora_sp_remote_resource_is
     drupal_goto($remote_url);
   }
   else {
-    $output = theme('islandora_solution_pack_remote_resource_default', array('islandora_object' => $object));
+    $output = theme('islandora_solution_pack_remote_resource', array('islandora_object' => $object));
     return array('' => $output);
   }
 }

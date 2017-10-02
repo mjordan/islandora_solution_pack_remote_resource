@@ -14,7 +14,7 @@
  *   An associative array containing:
  *   - islandora_object: An AbstractObject from Islandora.
  */
-function islandora_solution_pack_remote_resource_preprocess_islandora_solution_pack_remote_resource_default(array &$variables) {
+function islandora_solution_pack_remote_resource_preprocess_islandora_solution_pack_remote_resource(array &$variables) {
   drupal_add_js('misc/form.js');
   drupal_add_js('misc/collapse.js');
   drupal_add_css(drupal_get_path('module', 'islandora_solution_pack_remote_resource') . '/css/default.theme.css');

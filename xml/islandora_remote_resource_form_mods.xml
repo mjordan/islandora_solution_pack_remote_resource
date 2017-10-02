@@ -84,7 +84,7 @@
             <properties>
               <type>textfield</type>
               <access>TRUE</access>
-              <description>Sub title of the remote resource.</description>
+              <description>Subtitle of the remote resource.</description>
               <required>FALSE</required>
               <title>Subtitle</title>
               <tree>TRUE</tree>
@@ -255,7 +255,7 @@
           <collapsed>FALSE</collapsed>
           <collapsible>FALSE</collapsible>
           <default_value>text</default_value>
-          <description>Information in this field is about the original item. For example, in the case of a digitized photograph, &lt;typeOfResource&gt; would apply to the analog original; in born-digital materials, it would apply to the original digital format.</description>
+          <description>Information in this field is about the original item. For example, in the case of a digitized photograph, it would apply to the analog original; in born-digital materials, it would apply to the original digital format.</description>
           <disabled>FALSE</disabled>
           <executes_submit_callback>FALSE</executes_submit_callback>
           <multiple>FALSE</multiple>
@@ -298,41 +298,14 @@
         </properties>
         <children/>
       </element>
-      <element name="abstract">
-        <properties>
-          <type>textarea</type>
-          <access>TRUE</access>
-          <required>FALSE</required>
-          <title>Abstract</title>
-          <tree>TRUE</tree>
-          <actions>
-            <create>
-              <path>self::node()</path>
-              <context>parent</context>
-              <schema/>
-              <type>element</type>
-              <prefix>NULL</prefix>
-              <value>abstract</value>
-            </create>
-            <read>
-              <path>mods:abstract</path>
-              <context>parent</context>
-            </read>
-            <update>
-              <path>self::node()</path>
-              <context>self</context>
-            </update>
-            <delete>NULL</delete>
-          </actions>
-        </properties>
-        <children/>
-      </element>
       <element name="genre">
         <properties>
           <type>textfield</type>
           <access>TRUE</access>
           <collapsed>FALSE</collapsed>
           <collapsible>FALSE</collapsible>
+          <description>Information in this field is also about the original item, but it is more specific than "Type of Resource". A commonly used list of values is https://www.loc.gov/standards/valuelist/marcgt.html.</description>
+          <default_value>web site</default_value>
           <disabled>FALSE</disabled>
           <executes_submit_callback>FALSE</executes_submit_callback>
           <multiple>FALSE</multiple>
@@ -351,6 +324,35 @@
             </create>
             <read>
               <path>mods:genre</path>
+              <context>parent</context>
+            </read>
+            <update>
+              <path>self::node()</path>
+              <context>self</context>
+            </update>
+            <delete>NULL</delete>
+          </actions>
+        </properties>
+        <children/>
+      </element>
+      <element name="abstract">
+        <properties>
+          <type>textarea</type>
+          <access>TRUE</access>
+          <required>FALSE</required>
+          <title>Abstract</title>
+          <tree>TRUE</tree>
+          <actions>
+            <create>
+              <path>self::node()</path>
+              <context>parent</context>
+              <schema/>
+              <type>element</type>
+              <prefix>NULL</prefix>
+              <value>abstract</value>
+            </create>
+            <read>
+              <path>mods:abstract</path>
               <context>parent</context>
             </read>
             <update>

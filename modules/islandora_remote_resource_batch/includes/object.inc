@@ -41,7 +41,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
 
       // OBJ datastream.
       $obj = $this->constructDatastream('OBJ', 'M');
-      $obj->label = 'REMOTE_URL';
+      $obj->label = 'Remote URL';
       $obj->mimetype = 'text/plain';
       $obj->setContentFromString($this->txtObjFilePath, FALSE);
       $this->ingestDatastream($obj);
@@ -64,7 +64,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
 
     // OBJ datastream.
     $obj = $this->constructDatastream('OBJ', 'M');
-    $obj->label = 'REMOTE_URL';
+    $obj->label = 'Remote URL';
     $obj->mimetype = 'text/plain';
     $obj->setContentFromFile($this->txtObjFilePath, FALSE);
     $this->ingestDatastream($obj);

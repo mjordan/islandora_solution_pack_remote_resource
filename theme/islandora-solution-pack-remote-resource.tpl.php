@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This is the template file for the Islandora Simple XML object.
+ * This is the template file for Islandora Remote Resource objects.
  */
 ?>
 
