@@ -52,7 +52,7 @@ The datastream's mimetype will be derived from its extension, in the example abo
 
 ### Example input directories
 
-Two XML files, which will create two objects. The thumbnail and MODS datastreams for the objects will be set to defaults:
+Two text files, which will create two objects. The thumbnail and MODS datastreams for the objects will be set to defaults:
 
 ```
 .
