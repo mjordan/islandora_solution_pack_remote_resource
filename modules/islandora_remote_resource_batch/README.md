@@ -96,11 +96,13 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ```
 ## Ingesting from a URL list
 
-Another option for ingesting objects is to use a simple list of remote URLs. To use this option, replace the `--target` option with `--url_list`, giving it a value of the absolute path to a plain text file containing list of remote URLs:
+Another option for ingesting objects is to use a simple list of remote URLs. To use this option, replace the `--target` option with `--url_list`. The `--target` and `--url_list` options are mutually exclusive. If you include both, the `--url_list` option will be used.
+
+The value of `--url_list` is the absolute path to a CSV file containing list of remote URLs:
 
 `drush --user=admin islandora_remote_resource_batch_preprocess --url_list=/path/to/urls.txt --namespace=foo --parent=islandora:mycollection`
 
-The file containing the list should have one URL per line, e.g.:
+The file containing the list should have one URL per line, and the column header should be 'URL', e.g.:
 
 ```
 URL
@@ -111,7 +113,7 @@ http://yougetthepicture.net/some/file.htm
 
 Each object will be assigned a default TN, MODS, and DC datastream. However, the batch module will attempt to retrive the web page at each URL and parse out its title, and assign that title to the ingested object as its label. If it cannot retrieve or parse the title, a default label will be assigned to the object.
 
-Using this option, you can also specify additional datastreams. Column headers in the CSV file need to be named using the datastream ID for each additional datastream, and the files must be in the same directory as the .csv file.
+Using this option, you can also specify thumbnails by adding a second column with the header 'TN' and containing the thumbnail filenames. The files must be in the same directory as the .csv file.
 
 ```
 URL,TN
@@ -119,9 +121,6 @@ http://example.com,ex.jpg
 http://foobar.org,tn.jpg
 http://yougetthepicture.net/some/file.htm,image.jpg
 ```
-
-The `--target` and `--url_list` options are mutually exclusive. If you include both, the `--url_list` option will be used.
-
 
 ## Syncing updated datastreams
 
