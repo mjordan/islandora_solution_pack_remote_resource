@@ -22,9 +22,11 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
 
     // Using the default directory scan method of ingesting, this value is a
     // path to the .txt file for the object. Using the optional 'url_list'
-    // method of ingesting, this value is a URL. Yes, overloading this
-    // value is not optimal.
-    $this->txtObjFilePath = $txt_file_path;
+    // method of ingesting, this value is an empty string. The URL is in
+    // $batch_parameters['datastreams']['URL'].
+    if (strlen($txt_file_path)) {
+      $this->txtObjFilePath = $txt_file_path;
+    }
 
     $this->preprocessorParameters = $batch_parameters;
   }
@@ -35,7 +37,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   public function batchProcess() {
     if (strlen($this->preprocessorParameters['url_list'])) {
       module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
-      if ($label = islandora_remote_resource_batch_fetch_remote_title($this->txtObjFilePath)) {
+      if ($label = islandora_remote_resource_batch_fetch_remote_title($this->preprocessorParameters['datastreams']['URL'])) {
         $this->label = $label;
       }
 
@@ -43,7 +45,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
       $obj = $this->constructDatastream('OBJ', 'M');
       $obj->label = 'Remote URL';
       $obj->mimetype = 'text/plain';
-      $obj->setContentFromString($this->txtObjFilePath, FALSE);
+      $obj->setContentFromString($this->preprocessorParameters['datastreams']['URL'], FALSE);
       $this->ingestDatastream($obj);
 
       // TN datastream.
@@ -140,15 +142,30 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    */
   private function getTn() {
     $tn_extensions = array('png', 'jpg', 'jpeg', 'gif');
-    $pathinfo = pathinfo($this->txtObjFilePath);
-    $dir_name = $pathinfo['dirname'];
-    $file_name = $pathinfo['filename'];
-    $tn_file_path = '';
-    foreach ($tn_extensions as $ext) {
-      $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.TN.' . $ext;
-      if (file_exists($tn_file_path)) {
-        break;
+
+    if (isset($this->txtObjFilePath)) {
+      $pathinfo = pathinfo($this->txtObjFilePath);
+      $dir_name = $pathinfo['dirname'];
+      $file_name = $pathinfo['filename'];
+      $tn_file_path = '';
+      foreach ($tn_extensions as $ext) {
+        $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.TN.' . $ext;
+        if (file_exists($tn_file_path)) {
+          break;
+        }
       }
+    }
+    elseif (isset($this->preprocessorParameters['datastreams']['TN'])) {
+      // Files must be in the same directory as the URL list CSV.
+      $pathinfo = pathinfo($this->preprocessorParameters['url_list']);
+      $dir_name = $pathinfo['dirname'];
+      $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $this->preprocessorParameters['datastreams']['TN'];
+      if (!file_exists($tn_file_path)) {
+        return FALSE;
+      }
+    }
+    else {
+      return FALSE;
     }
 
     if (file_exists($tn_file_path)) {
@@ -235,7 +252,7 @@ EOQ;
     foreach ($ds_filepaths as $ds_filepath) {
       // We don't want the base .txt file.
       if ($ds_filepath != $base_path . '.txt') {
-        // Or the MODS, TN, or RENDER_STYLESHEET files.
+        // Or the MODS, TN, files.
         if (!preg_match('/\.(TN|MODS)/', $ds_filepath)) {
           $ds_filepath_filename = pathinfo($ds_filepath, PATHINFO_FILENAME);
           // The DSID is not an extension, but it will be the part after

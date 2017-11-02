@@ -121,3 +121,24 @@ function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
     }
   }
 }
+
+/**
+ * Creates structured records from a CSV file.
+ *
+ * @param array $records
+ *   An array of rows from a CSV file. First row is column headers.
+ *
+ * @return array
+ *   An array of associative arrays containing arrays, one per row,
+ *   containing key => value pairs where the headers are keys and the
+ *   values are the corresponding CSV cell values.
+ */
+function islandora_remote_resource_batch_get_csv_records($records) {
+  $new = array();
+  $header = array_shift($records);
+  $header = explode(',', trim($header));
+  foreach ($records as $row) {
+    $new[] = array_combine($header, explode(',', trim($row)));
+  }
+  return $new;
+}
