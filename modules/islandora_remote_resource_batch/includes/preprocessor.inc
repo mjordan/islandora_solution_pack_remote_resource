@@ -22,7 +22,7 @@ class IslandoraRemoteResourceBatchPreprocessor extends IslandoraBatchPreprocesso
     // Ingest from URL list.
     if (strlen($this->parameters['url_list'])) {
       $rows = file($this->parameters['url_list']);
-      $url_list = islandora_remote_resource_batch_get_csv_records($rows);
+      $url_list = islandora_remote_resource_batch_get_csv_records($rows, $this->parameters['url_list_delimiter']);
       foreach ($url_list as $record) {
         // We only want to ingest objects that aren't already in our repo.
         $remote_url = $record['URL'];

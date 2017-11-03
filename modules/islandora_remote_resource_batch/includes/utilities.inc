@@ -74,6 +74,30 @@ function islandora_remote_resource_batch_apply_xslt($xslt, $input_xml, $params =
 }
 
 /**
+ * Get object label from dc:title.
+ *
+ * @param string $dc
+ *   The serialized DC datastream XML.
+ *
+ * @return string
+ *   The label.
+ */
+function islandora_solution_pack_remote_resource_get_label_from_dc($dc) {
+  $dom = new DOMDocument();
+  $dom->loadXML($dc_content);
+  $xpath = new DOMXPath($dom);
+  $xpath->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/');
+  $titles = $xpath->query("//dc:title");
+  if ($titles->length > 0) {
+    $this->label = $titles->item(0)->nodeValue;
+  }
+  else {
+    $this->label = '[No object label available]';
+  }
+  return $label;
+}
+
+/**
  * Attempts to retrieve the remote web page and parse it title.
  *
  * @param string $remote_url
@@ -125,20 +149,22 @@ function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
 /**
  * Creates structured records from a CSV file.
  *
- * @param array $records
+ * @param array $rows
  *   An array of rows from a CSV file. First row is column headers.
+ * @param string $delimiter
+ *   The delimiter to use in the CSV file.
  *
  * @return array
  *   An array of associative arrays containing arrays, one per row,
  *   containing key => value pairs where the headers are keys and the
  *   values are the corresponding CSV cell values.
  */
-function islandora_remote_resource_batch_get_csv_records($records) {
-  $new = array();
-  $header = array_shift($records);
-  $header = explode(',', trim($header));
-  foreach ($records as $row) {
-    $new[] = array_combine($header, explode(',', trim($row)));
+function islandora_remote_resource_batch_get_csv_records($rows, $delimiter = ',') {
+  $records = array();
+  $header = array_shift($rows);
+  $header = explode($delimiter, trim($header));
+  foreach ($rows as $row) {
+    $records[] = array_combine($header, explode($delimiter, trim($row)));
   }
-  return $new;
+  return $records;
 }

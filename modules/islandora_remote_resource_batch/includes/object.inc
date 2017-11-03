@@ -48,6 +48,20 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
       $obj->setContentFromString($this->preprocessorParameters['datastreams']['URL'], FALSE);
       $this->ingestDatastream($obj);
 
+      // MODS, then from it DC, datastreams.
+      if ($mods = $this->getMods()) {
+        $this->ingestDatastream($mods);
+
+        $path_to_mods_to_dc_xsl = drupal_get_path('module', 'islandora_batch') . '/transforms/mods_to_dc.xsl';
+        $mods_to_dc_xsl = file_get_contents($path_to_mods_to_dc_xsl);
+        $dc_xml = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
+        if ($dc = $this->getDc($dc_xml)) {
+          $this->ingestDatastream($dc);
+        }
+
+        $this->label = islandora_solution_pack_remote_resource_get_label_from_dc($dc_xml);
+      }
+
       // TN datastream.
       if ($tn = $this->getTn()) {
         $this->ingestDatastream($tn);
@@ -78,25 +92,12 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
       module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
       $path_to_mods_to_dc_xsl = drupal_get_path('module', 'islandora_batch') . '/transforms/mods_to_dc.xsl';
       $mods_to_dc_xsl = file_get_contents($path_to_mods_to_dc_xsl);
-      $dc_content = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
-      $dc = $this->constructDatastream('DC', 'M');
-      $dc->mimetype = 'application/xml';
-      $dc->label = 'DC Record';
-      $dc->setContentFromString($dc_content);
-      $this->ingestDatastream($dc);
+      $dc_xml = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
+      if ($dc = $this->getDc($dc_xml)) {
+        $this->ingestDatastream($dc);
+      }
 
-      // Get object label from dc:title.
-      $dom = new DOMDocument();
-      $dom->loadXML($dc_content);
-      $xpath = new DOMXPath($dom);
-      $xpath->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/');
-      $titles = $xpath->query("//dc:title");
-      if ($titles->length > 0) {
-        $this->label = $titles->item(0)->nodeValue;
-      }
-      else {
-        $this->label = '[No object label available]';
-      }
+      $this->label = islandora_solution_pack_remote_resource_get_label_from_dc($dc_xml);
     }
 
     // TN datastream.
@@ -202,10 +203,16 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    *   was created.
    */
   private function getMods() {
+
+
+    // @todo: incorporate logic to allow for url_list
     $pathinfo = pathinfo($this->txtObjFilePath);
     $dir_name = $pathinfo['dirname'];
     $file_name = $pathinfo['filename'];
     $mods_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.MODS.xml';
+
+
+
     if (file_exists($mods_file_path)) {
       $mods = $this->constructDatastream('MODS', 'M');
       $mods->mimetype = 'application/xml';
@@ -231,6 +238,23 @@ EOQ;
   }
 
   /**
+   * Generates a DC datastream from MODS XML.
+   *
+   * @param string $dc_xml
+   *   The serialized DC XML.
+   *
+   * @return object
+   *   The DC datastream, ready for ingestion.
+   */
+  private function getDc($dc_xml) {
+    $dc = $this->constructDatastream('DC', 'M');
+    $dc->mimetype = 'application/xml';
+    $dc->label = 'DC Record';
+    $dc->setContentFromString($dc_xml);
+    return $dc;
+  }
+
+  /**
    * Creates any additional datastreams for the object based on filename.
    *
    * For a base OJB file with the name somefile.txt, a datastream with the
@@ -243,6 +267,8 @@ EOQ;
    */
   private function getAdditionalDatastreams() {
     $datastreams = array();
+
+    // @todo: incorporate logic to allow for url_list
     $pathinfo = pathinfo($this->txtObjFilePath);
     $dir_name = $pathinfo['dirname'];
     $file_name = $pathinfo['filename'];
