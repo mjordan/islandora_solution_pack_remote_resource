@@ -109,7 +109,7 @@ function islandora_solution_pack_remote_resource_islandora_required_objects(Isla
   $datastream = $remote_resource_collection->constructDatastream('TN', 'M');
   $datastream->label = 'Thumbnail';
   $datastream->mimetype = 'image/png';
-  $datastream->setContentFromFile("$module_path/images/remote.png", FALSE);
+  $datastream->setContentFromFile("$module_path/images/folder.png", FALSE);
   $remote_resource_collection->ingestDatastream($datastream);
   return array(
     'islandora_solution_pack_remote_resource' => array(

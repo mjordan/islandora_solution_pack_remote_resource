@@ -19,15 +19,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
     parent::__construct(NULL, $connection->repository);
 
     $this->label = 'Untitled';
-
-    // Using the default directory scan method of ingesting, this value is a
-    // path to the .txt file for the object. Using the optional 'url_list'
-    // method of ingesting, this value is an empty string. The URL is in
-    // $batch_parameters['datastreams']['URL'].
-    if (strlen($txt_file_path)) {
-      $this->txtObjFilePath = $txt_file_path;
-    }
-
+    $this->txtObjFilePath = $txt_file_path;
     $this->preprocessorParameters = $batch_parameters;
   }
 
@@ -35,48 +27,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    * Assemble the base datastreams.
    */
   public function batchProcess() {
-    if (strlen($this->preprocessorParameters['url_list'])) {
-      module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
-      if ($label = islandora_remote_resource_batch_fetch_remote_title($this->preprocessorParameters['datastreams']['URL'])) {
-        $this->label = $label;
-      }
-
-      // OBJ datastream.
-      $obj = $this->constructDatastream('OBJ', 'M');
-      $obj->label = 'Remote URL';
-      $obj->mimetype = 'text/plain';
-      $obj->setContentFromString($this->preprocessorParameters['datastreams']['URL'], FALSE);
-      $this->ingestDatastream($obj);
-
-      // MODS, then from it DC, datastreams.
-      if ($mods = $this->getMods()) {
-        $this->ingestDatastream($mods);
-
-        $path_to_mods_to_dc_xsl = drupal_get_path('module', 'islandora_batch') . '/transforms/mods_to_dc.xsl';
-        $mods_to_dc_xsl = file_get_contents($path_to_mods_to_dc_xsl);
-        $dc_xml = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
-        if ($dc = $this->getDc($dc_xml)) {
-          $this->ingestDatastream($dc);
-        }
-
-        $this->label = islandora_solution_pack_remote_resource_get_label_from_dc($dc_xml);
-      }
-
-      // TN datastream.
-      if ($tn = $this->getTn()) {
-        $this->ingestDatastream($tn);
-      }
-
-      $this->addRelationships();
-
-      // Indicate that this object is ready to be ingested. If we are using
-      // the 'url_list' ingest method, return here since there are not other
-      // datastreams to process.
-      return ISLANDORA_BATCH_STATE__DONE;
-    }
-
-    // If we haven't returned yet, assume we're using the default directory
-    // scan method of ingesting.
+    module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
 
     // OBJ datastream.
     $obj = $this->constructDatastream('OBJ', 'M');
@@ -89,7 +40,6 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
     if ($mods = $this->getMods()) {
       $this->ingestDatastream($mods);
 
-      module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
       $path_to_mods_to_dc_xsl = drupal_get_path('module', 'islandora_batch') . '/transforms/mods_to_dc.xsl';
       $mods_to_dc_xsl = file_get_contents($path_to_mods_to_dc_xsl);
       $dc_xml = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
@@ -144,29 +94,15 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   private function getTn() {
     $tn_extensions = array('png', 'jpg', 'jpeg', 'gif');
 
-    if (isset($this->txtObjFilePath)) {
-      $pathinfo = pathinfo($this->txtObjFilePath);
-      $dir_name = $pathinfo['dirname'];
-      $file_name = $pathinfo['filename'];
-      $tn_file_path = '';
-      foreach ($tn_extensions as $ext) {
-        $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.TN.' . $ext;
-        if (file_exists($tn_file_path)) {
-          break;
-        }
+    $pathinfo = pathinfo($this->txtObjFilePath);
+    $dir_name = $pathinfo['dirname'];
+    $file_name = $pathinfo['filename'];
+    $tn_file_path = '';
+    foreach ($tn_extensions as $ext) {
+      $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.TN.' . $ext;
+      if (file_exists($tn_file_path)) {
+        break;
       }
-    }
-    elseif (isset($this->preprocessorParameters['datastreams']['TN'])) {
-      // Files must be in the same directory as the URL list CSV.
-      $pathinfo = pathinfo($this->preprocessorParameters['url_list']);
-      $dir_name = $pathinfo['dirname'];
-      $tn_file_path = $dir_name . DIRECTORY_SEPARATOR . $this->preprocessorParameters['datastreams']['TN'];
-      if (!file_exists($tn_file_path)) {
-        return FALSE;
-      }
-    }
-    else {
-      return FALSE;
     }
 
     if (file_exists($tn_file_path)) {
@@ -203,15 +139,10 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    *   was created.
    */
   private function getMods() {
-
-
-    // @todo: incorporate logic to allow for url_list
     $pathinfo = pathinfo($this->txtObjFilePath);
     $dir_name = $pathinfo['dirname'];
     $file_name = $pathinfo['filename'];
     $mods_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.MODS.xml';
-
-
 
     if (file_exists($mods_file_path)) {
       $mods = $this->constructDatastream('MODS', 'M');
@@ -268,7 +199,6 @@ EOQ;
   private function getAdditionalDatastreams() {
     $datastreams = array();
 
-    // @todo: incorporate logic to allow for url_list
     $pathinfo = pathinfo($this->txtObjFilePath);
     $dir_name = $pathinfo['dirname'];
     $file_name = $pathinfo['filename'];

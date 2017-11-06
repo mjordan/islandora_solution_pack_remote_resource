@@ -32,12 +32,6 @@ function islandora_remote_resource_batch_drush_command() {
         'description' => 'The predicate of the relationship to the parent. Defaults to "isMemberOf".',
         'value' => 'optional',
       ),
-      'url_list' => array(
-        'description' => 'Absolute path to a file containing the URLs of remote resources to ingest. See the README for more information.',
-      ),
-      'url_list_delimiter' => array(
-        'description' => 'Character used to delimit records in the URL list file. You should wrap the character in double quotes, e.g. to use a |, specify --url_list_delimiter="|". Defaults to a comma (,).',
-      ),
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
   );
@@ -86,8 +80,6 @@ function drush_islandora_remote_resource_batch_preprocess() {
     'parent' => drush_get_option('parent'),
     'parent_relationship_uri' => drush_get_option('parent_relationship_uri', 'info:fedora/fedora-system:def/relations-external#'),
     'parent_relationship_pred' => drush_get_option('parent_relationship_pred', 'isMemberOf'),
-    'url_list' => drush_get_option('url_list', ''),
-    'url_list_delimiter' => drush_get_option('url_list_delimiter', ','),
   );
 
   // Run the preprocessor.
