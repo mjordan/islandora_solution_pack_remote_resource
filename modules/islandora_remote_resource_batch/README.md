@@ -22,7 +22,7 @@ Then, to perform the ingest:
 
 This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and for each object you want to ingest, you must have at least a file representing its OJB datastream. All other files are optional.
 
-Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is a good strategy. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) is available in the '[scripts](scripts/README.md)' directory.
+Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is a good strategy. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) to harvest content via OAI-PMH that is ready to ingest into Islandora is available in the [Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools).
 
 ### OBJ datastreams
 
@@ -97,6 +97,7 @@ Same as the previous example, but for the object created from foo.txt, an additi
 
 ## Ingesting from a CSV file
 
+[Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools) offers a utility for converting data in a CSV file into ingest packages.
 
 ## Syncing updated datastreams
 
