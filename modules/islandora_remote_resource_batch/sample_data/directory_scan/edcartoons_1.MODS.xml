@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <name type="personal">
+    <namePart>Krieger, Bob</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+    </role>
+    <role>
+      <roleTerm type="code" authority="marcrelator">cre</roleTerm>
+    </role>
+  </name>
+  <titleInfo>
+     <title>I WANT YOUR FISH</title>
+  </titleInfo>
+  <physicalDescription>
+    <extent>17.5 cm x 22.3 cm</extent>
+  </physicalDescription>
+  <identifier type="local" displayLabel="Cartoon key">3-1997-06-06</identifier>
+  <identifier type="local" displayLabel="SFU MsCCode">MsC 25.KRI.13.15</identifier>
+  <identifier type="uri" displayLabel="Migrated from" invalid="yes">http://edocs.lib.sfu.ca/cgi-bin/Cartoons?CartoonID=8377</identifier>
+  <note type="text">I WANT YOUR FISH</note>
+  <genre authority="gmgpc">Editorial cartoons</genre>
+  <typeOfResource>still image</typeOfResource>
+  <identifier type="uuid">54268cf8-730b-40cd-9824-879b7301d4d0</identifier>
+  <extension>
+    <CSVData>
+      <id_in_csv>8377</id_in_csv>
+      <CSVRecord timestamp="2017-04-01 15:35:30" mimetype="application/json"><![CDATA[{"CartoonID":"8377","CartoonKey":"3-1997-06-06","Cartoonist":"Krieger, Bob","Date":"1997-06-06","CartoonText":"I WANT YOUR FISH","PhysicalDescription":"17.5 cm x 22.3 cm","PublicationInfo":"The Province","DisplayNotes":"","MsCCode":"MsC 25.KRI.13.15","MD5Checksum":"69cc8bedf43674b76bd868fe03c0fabb","Subjects":"Uncle Sam (Symbolic character);Canada -- Foreign relations -- United States;United States -- Foreign relations -- Canada;Pacific salmon fisheries","Subjects_TGM1":"","Subjects_LCSH":"","File":"3-1997-06-06.tif","key":"8377"}]]></CSVRecord>
+    </CSVData>
+  </extension>
+  <language>
+    <languageTerm type="text">English</languageTerm>
+    <languageTerm type="code" authority="iso639-2b">eng</languageTerm>
+  </language>
+  <originInfo>
+    <publisher>The Province</publisher>
+    <dateIssued encoding="w3cdtf" keyDate="yes">1997-06-06</dateIssued>
+  </originInfo>
+  <subject>
+    <topic>Uncle Sam (Symbolic character)</topic>
+    <topic>Canada -- Foreign relations -- United States</topic>
+    <topic>United States -- Foreign relations -- Canada</topic>
+    <topic>Pacific salmon fisheries</topic>
+  </subject>
+</mods>

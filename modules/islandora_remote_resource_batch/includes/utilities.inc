@@ -15,7 +15,7 @@
  *   The corresponding PID, or FALSE if none is found.
  */
 function islandora_remote_resource_batch_query_solr($remote_url) {
-  // @todo: Change query so that the remote URL is not searched as a substring.
+  // See https://git.lib.sfu.ca/mjordan/islandora_solution_pack_remote_resource/issues/7.
   $query = 'OBJ_t:"' . trim($remote_url) . '"';
   $query_processor = new IslandoraSolrQueryProcessor();
   $query_processor->solrQuery = $query;

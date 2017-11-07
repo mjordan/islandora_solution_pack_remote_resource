@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <name type="personal">
+    <namePart>Olson, Geoff</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+    </role>
+    <role>
+      <roleTerm type="code" authority="marcrelator">cre</roleTerm>
+    </role>
+  </name>
+  <titleInfo>
+     <title>Kids! Out of concern for their health, we always tell them to avoid dangerous substances. But do they ever listen? "I'm not after dope, dude. Got any farmed salmon on you?"</title>
+  </titleInfo>
+  <physicalDescription>
+    <extent>25.9 cm x 18.0 cm</extent>
+  </physicalDescription>
+  <identifier type="local" displayLabel="Cartoon key">11-2004-01-12</identifier>
+  <identifier type="local" displayLabel="SFU MsCCode">MsC 25.OLS.1.10</identifier>
+  <identifier type="uri" displayLabel="Migrated from" invalid="yes">http://edocs.lib.sfu.ca/cgi-bin/Cartoons?CartoonID=7394</identifier>
+  <note type="text">Kids! Out of concern for their health, we always tell them to avoid dangerous substances. But do they ever listen? "I'm not after dope, dude. Got any farmed salmon on you?"</note>
+  <genre authority="gmgpc">Editorial cartoons</genre>
+  <typeOfResource>still image</typeOfResource>
+  <identifier type="uuid">18800d04-5baa-4198-9654-9c3c19a702ce</identifier>
+  <extension>
+    <CSVData>
+      <id_in_csv>7394</id_in_csv>
+      <CSVRecord timestamp="2017-04-01 15:26:53" mimetype="application/json"><![CDATA[{"CartoonID":"7394","CartoonKey":"11-2004-01-12","Cartoonist":"Olson, Geoff","Date":"2004-01-12","CartoonText":"Kids! Out of concern for their health, we always tell them to avoid dangerous substances. But do they ever listen? \"I'm not after dope, dude. Got any farmed salmon on you?\"","PhysicalDescription":"25.9 cm x 18.0 cm","PublicationInfo":"The Vancouver Courier","DisplayNotes":"","MsCCode":"MsC 25.OLS.1.10","MD5Checksum":"991b2d8b8b66c41f928f5f7224893ff7","Subjects":"Drugs;Salmon farming -- British Columbia","Subjects_TGM1":"Health;Salmon;Drug dealers","Subjects_LCSH":"","File":"11-2004-01-12.tif","key":"7394"}]]></CSVRecord>
+    </CSVData>
+  </extension>
+  <language>
+    <languageTerm type="text">English</languageTerm>
+    <languageTerm type="code" authority="iso639-2b">eng</languageTerm>
+  </language>
+  <originInfo>
+    <publisher>The Vancouver Courier</publisher>
+    <dateIssued encoding="w3cdtf" keyDate="yes">2004-01-12</dateIssued>
+  </originInfo>
+  <subject>
+    <topic>Drugs</topic>
+    <topic>Salmon farming -- British Columbia</topic>
+  </subject>
+</mods>

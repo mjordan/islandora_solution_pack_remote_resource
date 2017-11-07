@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <name type="personal">
+    <namePart>Murphy, Dan</namePart>
+    <role>
+      <roleTerm type="text" authority="marcrelator">creator</roleTerm>
+    </role>
+    <role>
+      <roleTerm type="code" authority="marcrelator">cre</roleTerm>
+    </role>
+  </name>
+  <titleInfo>
+     <title>Canada's fish-habitat managers, according to our Environment Commissioner- DFO</title>
+  </titleInfo>
+  <physicalDescription>
+    <extent>22.7 cm x 16.6 cm</extent>
+  </physicalDescription>
+  <identifier type="local" displayLabel="Cartoon key">5-2005-08-31-a</identifier>
+  <identifier type="local" displayLabel="SFU MsCCode">MsC 25.MUR.9.43</identifier>
+  <identifier type="uri" displayLabel="Migrated from" invalid="yes">http://edocs.lib.sfu.ca/cgi-bin/Cartoons?CartoonID=9215</identifier>
+  <note type="text">Canada's fish-habitat managers, according to our Environment Commissioner- DFO</note>
+  <genre authority="gmgpc">Editorial cartoons</genre>
+  <typeOfResource>still image</typeOfResource>
+  <identifier type="uuid">00628ad1-f077-4eb0-b722-6d291f72d300</identifier>
+  <extension>
+    <CSVData>
+      <id_in_csv>9215</id_in_csv>
+      <CSVRecord timestamp="2017-04-01 15:39:40" mimetype="application/json"><![CDATA[{"CartoonID":"9215","CartoonKey":"5-2005-08-31-a","Cartoonist":"Murphy, Dan","Date":"2005-08-31","CartoonText":"Canada's fish-habitat managers, according to our Environment Commissioner- DFO","PhysicalDescription":"22.7 cm x 16.6 cm","PublicationInfo":"The Province","DisplayNotes":"","MsCCode":"MsC 25.MUR.9.43","MD5Checksum":"8d0d65efe700009a6f0ebbbfef826fc2","Subjects":"Canada. Dept. of Fisheries and Oceans;Sockeye salmon;Pacific salmon fisheries -- British Columbia","Subjects_TGM1":"Fishing","Subjects_LCSH":"","File":"5-2005-08-31-a.tif","key":"9215"}]]></CSVRecord>
+    </CSVData>
+  </extension>
+  <language>
+    <languageTerm type="text">English</languageTerm>
+    <languageTerm type="code" authority="iso639-2b">eng</languageTerm>
+  </language>
+  <originInfo>
+    <publisher>The Province</publisher>
+    <dateIssued encoding="w3cdtf" keyDate="yes">2005-08-31</dateIssued>
+  </originInfo>
+  <subject>
+    <topic>Canada. Dept. of Fisheries and Oceans</topic>
+    <topic>Sockeye salmon</topic>
+    <topic>Pacific salmon fisheries -- British Columbia</topic>
+  </subject>
+</mods>

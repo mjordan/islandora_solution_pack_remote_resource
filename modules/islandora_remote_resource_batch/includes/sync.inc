@@ -9,7 +9,8 @@
 /**
  * Gets all OBJ files in input directory.
  *
- * Passes each off to function that updates accompanying datastreams.
+ * Passes each off to function that updates accompanying datastreams,
+ * islandora_remote_resource_batch_update_datastreams().
  *
  * @param string $input_path
  *   The absolute path of the input directory.
@@ -18,7 +19,7 @@ function islandora_remote_resource_batch_sync($input_path) {
   module_load_include('inc', 'islandora_remote_resource_batch', 'includes/utilities');
   $input_path = $input_path . DIRECTORY_SEPARATOR . '*.txt';
   foreach (glob($input_path) as $obj_path) {
-    // The OBJ files end in .txt.
+    // The OBJ files have a .txt extension.
     if (preg_match('/\.txt$/', $obj_path)) {
       $remote_url = file_get_contents($obj_path);
       if ($pid = islandora_remote_resource_batch_query_solr($remote_url)) {
@@ -33,7 +34,7 @@ function islandora_remote_resource_batch_sync($input_path) {
  *
  * Creates datastream if not present.
  *
- * @problem: 3 new versions are created, not 1.
+ * @problem: https://git.lib.sfu.ca/mjordan/islandora_solution_pack_remote_resource/issues/4.
  *
  * For a base OJB file with the name somefile.txt, a datastream with the
  * DSID 'FOO' will be created from a file with the name somfile.FOO.ext.
@@ -46,6 +47,7 @@ function islandora_remote_resource_batch_sync($input_path) {
  *   The absolute path to the OBJ datastream.
  */
 function islandora_remote_resource_batch_update_datastreams($pid, $path) {
+
   $pathinfo = pathinfo($path);
   $dir_name = $pathinfo['dirname'];
   $file_name = $pathinfo['filename'];
@@ -62,6 +64,16 @@ function islandora_remote_resource_batch_update_datastreams($pid, $path) {
       // just get the DSID using PATHINFO_EXTENSION because it's convenient.
       $dsid = pathinfo($ds_filepath_filename, PATHINFO_EXTENSION);
       if (strlen($dsid)) {
+
+/*
+  // Note: make sure each ds is updated, but only once.
+  // $fired = &drupal_static(__FUNCTION__);
+  // if (!isset($fired)) {
+    // Do stuff.
+    // $fired = TRUE;
+  // }
+*/
+
         // Perform a checksum comparison on the old and new datastream
         // content before going any further.
         if (isset($object[$dsid])) {
