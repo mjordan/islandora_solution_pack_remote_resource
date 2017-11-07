@@ -36,19 +36,27 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
     $obj->setContentFromFile($this->txtObjFilePath, FALSE);
     $this->ingestDatastream($obj);
 
-    // MODS, then from it DC, datastreams.
+    // DC datastream, if we have files named x.DC.xml.
+    // $this->getDc();
+      // $this->ingestDatastream($dc);
+    // }
+
+    // MODS, then from it DC, datastreams, if we have files named x.MODS.xml.
     if ($mods = $this->getMods()) {
       $this->ingestDatastream($mods);
 
       $path_to_mods_to_dc_xsl = drupal_get_path('module', 'islandora_batch') . '/transforms/mods_to_dc.xsl';
       $mods_to_dc_xsl = file_get_contents($path_to_mods_to_dc_xsl);
       $dc_xml = islandora_remote_resource_batch_apply_xslt($mods_to_dc_xsl, $mods->content);
-      if ($dc = $this->getDc($dc_xml)) {
+      if ($dc = $this->getDcFromMods($dc_xml)) {
         $this->ingestDatastream($dc);
       }
-
-      $this->label = islandora_solution_pack_remote_resource_get_label_from_dc($dc_xml);
     }
+
+    // If the input data contains DC datastreams, load them.
+    $this->getDc();
+
+    $this->label = islandora_solution_pack_remote_resource_get_label_from_dc($this['DC']->content);
 
     // TN datastream.
     if ($tn = $this->getTn()) {
@@ -82,6 +90,25 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
    */
   public function getResources() {
     return array();
+  }
+
+  /**
+   * Creates a DC datastream from a file.
+   *
+   * Note: The DC datastream does not contain the local PID.
+   *
+   * @return object
+   *   The DC datastream, ready for ingestion.
+   */
+  private function getDc() {
+    $pathinfo = pathinfo($this->txtObjFilePath);
+    $file_name = $pathinfo['filename'];
+    $dir_name = $pathinfo['dirname'];
+
+    $dc_file_path = $dir_name . DIRECTORY_SEPARATOR . $file_name . '.DC.xml';
+    if (file_exists($dc_file_path)) {
+      $this['DC']->setContentFromFile($dc_file_path, FALSE);
+    }
   }
 
   /**
@@ -177,7 +204,7 @@ EOQ;
    * @return object
    *   The DC datastream, ready for ingestion.
    */
-  private function getDc($dc_xml) {
+  private function getDcFromMods($dc_xml) {
     $dc = $this->constructDatastream('DC', 'M');
     $dc->mimetype = 'application/xml';
     $dc->label = 'DC Record';
@@ -208,8 +235,9 @@ EOQ;
     foreach ($ds_filepaths as $ds_filepath) {
       // We don't want the base .txt file.
       if ($ds_filepath != $base_path . '.txt') {
-        // Or the MODS, TN, files.
-        if (!preg_match('/\.(TN|MODS)/', $ds_filepath)) {
+        // Or the DC, MODS, TN, files since those datastreams are
+        // created elsewhere.
+        if (!preg_match('/\.(DC|TN|MODS)/', $ds_filepath)) {
           $ds_filepath_filename = pathinfo($ds_filepath, PATHINFO_FILENAME);
           // The DSID is not an extension, but it will be the part after
           // the final . in $ds_filepath_filename.
