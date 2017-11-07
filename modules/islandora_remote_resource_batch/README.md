@@ -38,9 +38,14 @@ To avoid duplication, prior to adding new objects to the batch ingest queue, thi
 
 OBJ file base name with the double extension `.TN.ext` where `.ext` is one of '.jpg', '.jpeg', '.png', or '.gif'.
 
+### DC datastreams
+
+OBJ file base name with the double extension `.DC.xml`. The DC XML should contain the same namespaces as the native Fedora DC datastream XML files. Note that you should include only DC or MODS input files, not both.
+
 ### MODS datastreams
 
-OBJ file base name with the double extension `.MODS.xml`.
+OBJ file base name with the double extension `.MODS.xml`. Note that you should include only DC or MODS input files, not both.
+
 
 ### Additional, arbitrary datastreams 
 
