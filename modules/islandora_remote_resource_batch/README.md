@@ -110,9 +110,9 @@ Copies of TN and MODS (and any optional datastreams) harvested from remote resro
 
 `drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
 
-To avoid needlessly replacing datastream files, this command generates a checksum for the existing datastream content and for the content of the new file, and only replaces the old with the new content if the checksums differ.
+The URL in the .txt file is used to query Islandora's Solr index for the corresponding PID, which is then used to update the corresponding object. To avoid needlessly replacing datastream files, this command generates a checksum for the existing datastream content and for the content of the new file, and only replaces the old with the new content if the checksums differ.
 
-Datastream files should be prepared in the same way as they are for ingestion, as described above. OBJ files are not updated, only TN, MODS, and other datastreams, but the OBJ datastream file must be present as it is used to check the existence of the corresponding object. Datastream files for new objects and for existing objects can be located in the same directory; `islandora_remote_resource_batch_preprocess` skips objects that already exsit, and `islandora_remote_resource_batch_sync` only updates existing objects.
+Datastream files should be prepared in the same way (and named in the same way) as they are for ingestion, as described above. OBJ files are not updated, only TN, MODS, and other datastreams, but the OBJ datastream file must be present as it is used to check the existence of the corresponding object. Datastream files for new objects and for existing objects can be located in the same directory; `islandora_remote_resource_batch_preprocess` skips objects that already exsit, and `islandora_remote_resource_batch_sync` only updates existing objects.
 
 ## Maintainer
 
