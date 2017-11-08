@@ -1,6 +1,6 @@
 # Contributing to Islandora Remote Resource Solution Pack
 
-All contributions to Islandora Remote Resource Solution Pack are welcome: use-cases, documentation, code, bug reports, feature requests, etc. You do not need to be a programmer to contribute!
+All contributions to Islandora Remote Resource Solution Pack are welcome: use cases, documentation, code, bug reports, feature requests, etc. You do not need to be a programmer to contribute!
 
 Regardless of how you want to contribute to this module, start by opening a GitHub issue. Someone (probably the maintainer) will respond and keep the discussion going.
 

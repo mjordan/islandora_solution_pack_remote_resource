@@ -10,9 +10,9 @@ Islandora batch module for ingesting objects managed by the Islandora Remote Res
 
 ## Usage
 
-After enabling this module, collections that contain objects of the remote resource content type will have a "Remote Resource Batch" link in their "Overview" subtab, which allows users to upload a zip archive containing files arranged as described below in the "Preparing your content files for ingesting" section.
+After enabling this module, collections that contain objects of the remote resource content model will have a "Remote Resource Batch" link in their "Overview" subtab, which allows users to upload a zip archive containing files arranged as described below in the "Preparing your content files for ingesting" section.
 
-You can also run the following drush command to import objects:
+You can also run the following drush command to ingest objects:
 
 `drush --user=admin islandora_remote_resource_batch_preprocess --target=/path/to/datastream/files --namespace=foo --parent=islandora:mycollection`
 
@@ -22,7 +22,7 @@ Then, to perform the ingest:
 
 ## Preparing your content files for ingesting
 
-This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory (the one you identify in the drush command with the `--target` option), and for each object you want to ingest, you must have at least a file representing its OJB datastream. All other files are optional.
+This batch module uses filename patterns to identify the files that are intended for specific datastreams. All of the files you are ingesting should go in the same directory, and for each object you want to ingest, you must have at least a file representing its OJB datastream. All other files are optional.
 
 Content for batch ingestion can be prepared in a variety of ways, but harvesting it via OAI-PMH is a good strategy. Documentation on how to use the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik) to harvest content via OAI-PMH that is ready to ingest into Islandora is available in the [Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools).
 
@@ -102,17 +102,17 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ├── baz.txt
 ```
 
-### Example zip file
+### Using a zip file
 
 Zip files used for ingesting objects via the GUI have the same structure as the directories described above. The zip file must not contain any subdirectories; all datastream files must be direct children of the top of the zip.
 
 ## Ingesting from a CSV file
 
-[Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools) offers a utility for converting data in a CSV file into ingest packages.
+This batch module does not support ingests from CSV files natively, but [Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools) offers a utility for converting data in a CSV file into ingest packages.
 
 ## Syncing updated datastreams
 
-Copies of TN and MODS (and any optional datastreams) harvested from remote resrource objects will inevitably become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target` option:
+Copies of TN and MODS (and any optional datastreams) harvested from remote resrource objects may become out of sync with their remote originals. This batch loader provides a command to update datastreams harvested from the remote resource that have changed. To use it, pass in the directory that contains the datastream files as the value of the `--target` option:
 
 `drush -u 1 islandora_remote_resource_batch_sync --target=/path/to/datastream/files`
 
