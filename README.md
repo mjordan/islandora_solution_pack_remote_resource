@@ -30,7 +30,7 @@ Objects managed by this module cannot be loaded using [Islandora Batch](https://
 
 ## Development and feedback
 
-Pull requests are welcome, as are use cases and suggestions. Please open a GitHub issue before opening a pull request.
+Bug reports, use cases and suggestions are welcome, as are pull requests. See CONTRIBUTING.md for more information.
 
 ## License
 

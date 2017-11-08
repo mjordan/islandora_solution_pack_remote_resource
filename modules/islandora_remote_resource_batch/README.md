@@ -122,7 +122,7 @@ Datastream files should be prepared in the same way (and named in the same way) 
 
 ## Development and feedback
 
-See the README in [Islandora Remote Resource Solution Pack](https://github.com/mjordan/islandora_solution_pack_remote_resource).
+Bug reports, use cases and suggestions are welcome, as are pull requests. See the CONTRIBUTING.md in [Islandora Remote Resource Solution Pack](https://github.com/mjordan/islandora_solution_pack_remote_resource) for more information.
 
 ## License
 
