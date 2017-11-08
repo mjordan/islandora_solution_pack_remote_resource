@@ -28,7 +28,7 @@ function islandora_remote_resource_batch_menu() {
  * Menu access callback.
  */
 function islandora_remote_resource_batch_menu_access($object) {
- if (!islandora_object_access(ISLANDORA_INGEST, $object)) {
+  if (!islandora_object_access(ISLANDORA_INGEST, $object)) {
     return FALSE;
   }
 

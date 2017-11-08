@@ -36,11 +36,6 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
     $obj->setContentFromFile($this->txtObjFilePath, FALSE);
     $this->ingestDatastream($obj);
 
-    // DC datastream, if we have files named x.DC.xml.
-    // $this->getDc();
-      // $this->ingestDatastream($dc);
-    // }
-
     // MODS, then from it DC, datastreams, if we have files named x.MODS.xml.
     if ($mods = $this->getMods()) {
       $this->ingestDatastream($mods);

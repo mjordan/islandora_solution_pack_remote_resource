@@ -10,7 +10,9 @@ Islandora batch module for ingesting objects managed by the Islandora Remote Res
 
 ## Usage
 
-Enable this module, then run its drush command to import objects:
+After enabling this module, collections that contain objects of the remote resource content type will have a "Remote Resource Batch" link in their "Overview" subtab, which allows users to upload a zip archive containing files arranged as described below in the "Preparing your content files for ingesting" section.
+
+You can also run the following drush command to import objects:
 
 `drush --user=admin islandora_remote_resource_batch_preprocess --target=/path/to/datastream/files --namespace=foo --parent=islandora:mycollection`
 

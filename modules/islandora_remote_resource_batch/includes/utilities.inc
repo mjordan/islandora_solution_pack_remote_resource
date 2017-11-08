@@ -124,7 +124,7 @@ function islandora_remote_resource_batch_fetch_remote_title($remote_url) {
         $titles = $dom->getElementsByTagName('title');
         if ($titles->length > 0) {
           return $titles->item(0)->nodeValue;
-       }
+        }
         else {
           drush_log(dt("Failed to parse title from remote resource !url: title element not found",
             array('!url' => $remote_url)),

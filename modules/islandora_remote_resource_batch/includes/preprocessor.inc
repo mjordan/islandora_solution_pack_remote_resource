@@ -44,7 +44,7 @@ class IslandoraRemoteResourceBatchPreprocessor extends IslandoraBatchPreprocesso
   }
 
   /**
-   * Generate output analogous to file_scan_directory().
+   * Expands the uploaded .zip file.
    *
    * @param string $zip_uri
    *   The Drupal URI to the zip archive.
@@ -61,7 +61,7 @@ class IslandoraRemoteResourceBatchPreprocessor extends IslandoraBatchPreprocesso
       return FALSE;
     }
 
-    $tmp_path = file_directory_temp() . DIRECTORY_SEPARATOR . pathinfo($zip_file, PATHINFO_FILENAME );
+    $tmp_path = file_directory_temp() . DIRECTORY_SEPARATOR . pathinfo($zip_file, PATHINFO_FILENAME);
     $zip->extractTo($tmp_path);
 
     $zip->close();
