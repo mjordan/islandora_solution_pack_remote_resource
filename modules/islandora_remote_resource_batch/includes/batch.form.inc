@@ -16,7 +16,7 @@ function islandora_remote_resource_batch_form($form, &$form_state, $object) {
   $form['target'] = array(
     '#type' => 'managed_file',
     '#title' => t('Zip file'),
-    '#description' => t('A Zip file containing ....'),
+    '#description' => t('A Zip file containing at least an OBJ text file for each remote resource, plus additional datastream files. See the "Preparing your content files for ingesting" section of the Islandora Remote Resource Batch for more information.'),
     '#required' => TRUE,
     '#upload_location' => 'public://',
     '#upload_validators' => array(

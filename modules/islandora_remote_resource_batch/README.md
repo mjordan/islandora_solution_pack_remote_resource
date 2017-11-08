@@ -102,6 +102,10 @@ Same as the previous example, but for the object created from foo.txt, an additi
 ├── baz.txt
 ```
 
+### Example zip file
+
+Zip files used for ingesting objects via the GUI have the same structure as the directories described above. The zip file must not contain any subdirectories; all datastream files must be direct children of the top of the zip.
+
 ## Ingesting from a CSV file
 
 [Islandora Remote Resouce Tools](https://github.com/mjordan/islandora_remote_resource_batch_tools) offers a utility for converting data in a CSV file into ingest packages.
