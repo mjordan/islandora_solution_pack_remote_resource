@@ -15,7 +15,7 @@ class IslandoraRemoteResourceBatchObject extends IslandoraBatchObject {
   /**
    * Constructor.
    */
-  public function __construct(IslandoraTuque $connection, string $txt_file_path, $batch_parameters) {
+  public function __construct(IslandoraTuque $connection, $txt_file_path, $batch_parameters) {
     parent::__construct(NULL, $connection->repository);
 
     $this->label = 'Untitled';

@@ -2,5 +2,42 @@
 
 /**
  * @file
- * Placeholder .module file.
+ * .module file.
  */
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_remote_resource_batch_menu() {
+  $items = array();
+
+  $items['islandora/object/%islandora_object/manage/remote_resource_batch'] = array(
+    'title' => 'Remote Resource Batch',
+    'access callback' => 'islandora_remote_resource_batch_menu_access',
+    'access arguments' => array(2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_remote_resource_batch_form', 2),
+    'file' => 'includes/batch.form.inc',
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  return $items;
+}
+
+/**
+ * Menu access callback.
+ */
+function islandora_remote_resource_batch_menu_access($object) {
+ if (!islandora_object_access(ISLANDORA_INGEST, $object)) {
+    return FALSE;
+  }
+
+  $c = 'COLLECTION_POLICY';
+  if (isset($object[$c]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$c])) {
+    $cp = new CollectionPolicy($object[$c]->content);
+
+    return array_key_exists('islandora:sp_remote_resource', $cp->getContentModels());
+  }
+
+  return FALSE;
+}
