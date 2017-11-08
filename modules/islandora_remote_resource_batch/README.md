@@ -1,6 +1,6 @@
 # Islandora Remote Resource Batch
 
-Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack (i.e., of content model 'islandora:sp_remote_resource'). Can ingest objects from either a directory containing datastream files or from a simple list of remote URLs. Also handles updating non-OBJ datastream files.
+Islandora batch module for ingesting objects managed by the Islandora Remote Resouce Solution Pack (i.e., of content model 'islandora:sp_remote_resource'). Can ingest objects from either an uploaded zip archive or a directory containing datastream files.
  
 ## Requirements
 
