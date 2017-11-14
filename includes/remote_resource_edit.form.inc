@@ -38,6 +38,9 @@ function islandora_solution_pack_remote_resource_edit_url_form($form, &$form_sta
       '#type' => 'submit',
       '#value' => t('Save'),
     ),
+    'cancel' => array(
+      '#markup' => l('Cancel', url('islandora/object/' . $object->id)),
+    ),
   );
 }
 

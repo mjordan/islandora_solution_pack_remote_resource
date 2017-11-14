@@ -10,7 +10,7 @@ The main general use case for this solution pack is to allow an Islandora instan
 
 * you have an IR (not Islandora) and a general repository (Islandora), and you want to make both searchable in the same place
 * you have a general repository (Islandora), but you have some small specialized collections that don't fit into Islandora easily or that you don't have the resources to migrate
-* you want to create curated Islandora collections that include content from a variety of plarforms
+* you want to create curated Islandora collections that include content from a variety of platforms
 
 Remote resource objects are full Islandora objects, so they can be themed, their usage can be tracked, they can fit into ingestion workflows, etc.
 
