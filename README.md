@@ -8,7 +8,7 @@ This solution pack manages stub objects that refer to resources located elsewher
 
 The main general use case for this solution pack is to allow an Islandora instance to allow discovery of content hosted elsewhere. A common strategy for getting content from other sites is via OAI-PMH harvests. However, the data used to create remote resource objects need not be from OAI-PMH feeds. Objects managed by this solution pack can be added manually, if desired, or data prepared for batch ingest via a variety of means. Some specific use cases include:
 
-* you have an IR (not Islandora) and a general repository (Islandora), and you want to make both searchable in the same place
+* you have a general repository (Islandora) and an IR (not Islandora), you want to make both searchable in the same place
 * you have a general repository (Islandora), but you have some small specialized collections that don't fit into Islandora easily or that you don't have the resources to migrate
 * you want to create curated Islandora collections that include content from a variety of platforms
 
