@@ -6,7 +6,11 @@ An Islandora Solution Pack that allows for ingesting and viewing stub objects th
 
 This solution pack manages stub objects that refer to resources located elsewhere on the web. The URL of the remote resource is stored in the object's OBJ datastream, which is a simple text file (all it contains is the remote URL string). On viewing a 'remote resource' object, the user is shown an interstitial page with a clickable link to the remote resource. There is an admin option to redirect the user directly to the resource. Each remote resource object can additional datastreams such as a MODS file, so that it can be discovered via Islandora's functionality.
 
-The main general use case for this solution pack is to allow an Islandora instance to allow discovery of content hosted elsewhere. A common strategy for getting content from other sites is via OAI-PMH harvests. However, the data used to create remote resource objects need not be from OAI-PMH feeds. Objects managed by this solution pack can be added manually, if desired, or data prepared for batch ingest via a variety of means. Some specific use cases include:
+The main general use case for this solution pack is to allow an Islandora instance to allow discovery of content hosted elsewhere. A common strategy for getting content from other sites is via OAI-PMH harvests. However, the data used to create remote resource objects need not be from OAI-PMH feeds. Objects managed by this solution pack can be added manually, if desired, or data prepared for batch ingest via a variety of means:
+
+![Overview diagram](https://user-images.githubusercontent.com/403918/33591649-8c6740c8-d93b-11e7-8b66-75e03701c1b4.png)
+
+Some specific use cases for this solution pack include:
 
 * you have a general repository (Islandora) and an IR (not Islandora), you want to make both searchable in the same place
 * you have a general repository (Islandora), but you have some small specialized collections that don't fit into Islandora easily or that you don't have the resources to migrate
