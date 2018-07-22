@@ -26,6 +26,12 @@ function islandora_solution_pack_remote_resource_create_form(array $form, array 
     '#descrtption' => t('URL of the remote resource'),
     '#required' => TRUE,
   );
+  $form['linktext'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link text'),
+    '#default_value' => '',
+    '#description' => t('If empty, the URL will be used as the link text.'),
+  );
 
   if (user_access('upload remote resource thumbnails')) {
     $tn_extensions = array('gif png jpg jpeg');
@@ -74,7 +80,15 @@ function islandora_solution_pack_remote_resource_create_form_submit(array $form,
   else {
     $ds = $object['OBJ'];
   }
-  $ds->setContentFromString($form_state['values']['url']);
+
+  if (strlen($form_state['values']['linktext'])) {
+    $obj_content = $form_state['values']['url'] . "\n" . $form_state['values']['linktext'];
+  }
+  else {
+    $obj_content = $form_state['values']['url'];
+  }
+
+  $ds->setContentFromString($obj_content);
   $ds->label = 'Remote URL';
   $ds->mimetype = 'text/plain';
 

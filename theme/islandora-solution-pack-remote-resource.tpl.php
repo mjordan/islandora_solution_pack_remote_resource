@@ -13,9 +13,14 @@
         <?php print $tn_markup; ?>
       </div>
     <?php endif; ?>
-    <?php if (isset($islandora_content)): ?>
+    <?php if (isset($url)): ?>
       <div class="islandora-remote-resource-content">
-        <?php print $islandora_content; ?>
+        <?php print t('This resource is hosted on another website:'); ?>
+        <?php if ($linktext): ?>
+          <?php print ' ' . l($linktext, $url); ?>
+        <?php else: ?>
+          <?php print ' ' . l($url, $url); ?>
+        <?php endif; ?>
       </div>
     <?php endif; ?>
   </div>

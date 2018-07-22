@@ -22,13 +22,19 @@ function islandora_solution_pack_remote_resource_edit_url(AbstractObject $object
  * Form callback.
  */
 function islandora_solution_pack_remote_resource_edit_url_form($form, &$form_state, AbstractObject $object) {
-  $url = $object['OBJ']->content;
+  list($url, $linktext) = explode("\n", $object['OBJ']->content);
   return array(
     'url' => array(
       '#title' => t('Remote URL'),
       '#type' => 'textfield',
       '#description' => t('URL to the remote resource.'),
       '#default_value' => $url,
+    ),
+    'linktext' => array(
+      '#type' => 'textfield',
+      '#title' => t('Link text'),
+      '#default_value' => $linktext,
+      '#description' => t('If empty, the URL will be used as the link text.'),
     ),
     'object' => array(
       '#type' => 'value',
@@ -39,7 +45,7 @@ function islandora_solution_pack_remote_resource_edit_url_form($form, &$form_sta
       '#value' => t('Save'),
     ),
     'cancel' => array(
-      '#markup' => l('Cancel', url('islandora/object/' . $object->id)),
+      '#markup' => l(t('Cancel'), url('islandora/object/' . $object->id)),
     ),
   );
 }
@@ -50,14 +56,22 @@ function islandora_solution_pack_remote_resource_edit_url_form($form, &$form_sta
 function islandora_solution_pack_remote_resource_edit_url_form_submit($form, &$form_state) {
   $object = islandora_object_load($form_state['values']['object']);
   if (!$object['OBJ']) {
-    $url = $object->constructDatastream('OBJ', 'M');
-    $url->mimetype = 'text/plain';
-    $url->label = 'Remote URL';
+    $ds = $object->constructDatastream('OBJ', 'M');
+    $ds->mimetype = 'text/plain';
+    $ds->label = 'Remote URL';
   }
   else {
-    $url = $object['OBJ'];
+    $ds = $object['OBJ'];
   }
-  $url->setContentFromString($form_state['values']['url']);
+
+  if (strlen($form_state['values']['linktext'])) {
+    $obj_content = $form_state['values']['url'] . "\n" . $form_state['values']['linktext'];
+  }
+  else {
+    $obj_content = $form_state['values']['url'];
+  }
+
+  $ds->setContentFromString($obj_content);
   drupal_set_message(t("Remote URL updated for !object.", array('!object' => $object->id)));
   drupal_goto("islandora/object/{$object->id}/manage/datastreams");
 }

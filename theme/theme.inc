@@ -42,8 +42,16 @@ function islandora_solution_pack_remote_resource_preprocess_islandora_solution_p
   $variables['metadata'] = islandora_retrieve_metadata_markup($islandora_object);
   $variables['description'] = islandora_retrieve_description_markup($islandora_object);
 
-  $remote_resource_url = $islandora_object['OBJ']->content;
-  $content = t('This resource is hosted on another website: <a href="!url">!url</a>.', array('!url' => $remote_resource_url));
+  $link_parts = explode("\n", $islandora_object['OBJ']->content);
+  $remote_resource_url = $link_parts[0];
+  $variables['url'] = $remote_resource_url;
+  if (isset($link_parts[1])) {
+    $linktext = $link_parts[1];
+  }
+  else {
+    $linktext = FALSE;
+  }
+  $variables['linktext'] = $linktext;
 
   if (variable_get('islandora_solution_pack_remote_resource_show_tn', 1)) {
     if (isset($islandora_object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $islandora_object['TN'])) {
@@ -62,6 +70,4 @@ function islandora_solution_pack_remote_resource_preprocess_islandora_solution_p
   else {
     $variables['display_tn'] = FALSE;
   }
-
-  $variables['islandora_content'] = $content;
 }
